@@ -7,7 +7,7 @@ Revision: 1.0
 
 # Table of Contents
 
-<!-- MarkdownTOC -->
+<!-- MarkdownTOC depth=3 -->
 
 - [Introduction](#introduction)
 - [About this Document](#about-this-document)
@@ -22,10 +22,22 @@ Revision: 1.0
     - [Rate Limiting](#rate-limiting)
 - [Service](#service)
     - [domain](#domain)
+        - [API](#api)
+        - [Example](#example)
     - [domain list](#domain-list)
+        - [API](#api-1)
+        - [Example](#example-1)
     - [handle](#handle)
+        - [API](#api-2)
+        - [Eksempel](#eksempel)
     - [host](#host)
+        - [API](#api-3)
+        - [Example](#example-2)
     - [query](#query)
+        - [API](#api-4)
+        - [Domain Example](#domain-example)
+        - [Host Example](#host-example)
+        - [Handle Example](#handle-example)
 - [Resources](#resources)
     - [Mailing list](#mailing-list)
     - [Issue Reporting](#issue-reporting)
@@ -45,8 +57,8 @@ The WHOIS service in not optimal for structured querying, both due to the lack o
 <a name="about-this-document"></a>
 # About this Document
 
-This specification describes version 2 (2.0.x) of the DK Hostmaster WHOIS Implementation. Future releases will be reflected in updates to this specification, please see the document history section below.
-The document describes the current DK Hostmaster WHOIS implementation, for more general documentation on the used protocols and additional information please refer to the RFCs and additional resources in the References and Resources chapters below.
+This specification describes version 1 (1.0.x) of the DK Hostmaster WHOIS RESTful service implementation. Future releases will be reflected in updates to this specification, please see the document history section below.
+The document describes the current DK Hostmaster WHOIS RESTful service implementation, for more general documentation on the used protocols and additional information please refer to the RFCs and additional resources in the References and Resources chapters below.
 Any future extensions and possible additions and changes to the implementation are not within the scope of this document and will not be discussed or mentioned throughout this document.
 
 Printable version can be obtained via [this link](https://gitprint.com/DK-Hostmaster/whois-rest-service-specification/blob/master/README.md), using the gitprint service.
@@ -67,8 +79,6 @@ This document is copyright by DK Hostmaster A/S and is licensed under the MIT Li
 
 DK Hostmaster is the registry for the ccTLD for Denmark (dk). The current model used in Denmark is based on a sole registry, with DK Hostmaster maintaining the central DNS registry.
 
-The WHOIS service offered by DK Hostmaster A/S aims to adhere to the WHOIS standard (see also [RFC:3912][RFC:3912]).
-
 <a name="features"></a>
 # Features
 
@@ -77,7 +87,7 @@ The service implements the following features.
 - Domain name inquiry
 - Host name inquiry
 - Handle inquiry
-- Support for multiple encodings (see: Encodings below)
+- Support for multiple encodings (see: [Encoding](#encoding) below)
 - Support for both IPv6 and IPv6
 
 <a name="implementation-limitations"></a>
@@ -117,6 +127,20 @@ Meaning that `192.0.2.41` and `192.0.2.52` can not have simultanous connections,
 <a name="service"></a>
 # Service
 
+The service offers four APIs, one specialized for each entity type:
+
+- domain (domainname)
+- host (hostname/nameserver)
+- handle (userid)
+
+And a generic API:
+
+- query
+
+Which relays to the specific service APIs for the mapped entity being one of the ones listed above.
+
+The service requires that the accept header is specified to be `application/json`, all of the below examples demonstrates this using the commandline utilities `curl` or `httpie`.
+
 <a name="domain"></a>
 ## domain
 
@@ -142,13 +166,13 @@ The service returns `200` if it can find a relevant object together with the pub
 Using `httpie`
 
 ```bash
-$ http https://whois-api.dk-hostmaster.dk/domain/eksempel.dk
+$ http https://whois-api.dk-hostmaster.dk/domain/eksempel.dk Accept:'application/json'
 ```
 
 Using `curl` and `jq`
 
 ```bash
-$ curl https://whois-api.dk-hostmaster.dk/domain/eksempel.dk | jq
+$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/domain/eksempel.dk | jq
 ```
 
 ```json
@@ -236,13 +260,13 @@ The service returns `200` if it can find a relevant object holding the relevant 
 Using `httpie`
 
 ```bash
-$ http https://whois-api.dk-hostmaster.dk/domain/list/handle/DKHM1-DK/role/proxy
+$ http https://whois-api.dk-hostmaster.dk/domain/list/handle/DKHM1-DK/role/proxy Accept:'application/json'
 ```
 
 Using `curl` and `jq`
 
 ```bash
-$ curl https://whois-api.dk-hostmaster.dk/domain/list/handle/DKHM1-DK/role/proxy | jq
+$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/domain/list/handle/DKHM1-DK/role/proxy | jq
 ```
 
 ```json
@@ -308,13 +332,13 @@ This service returns data on a given handle/user-id.
 Using `httpie`
 
 ```bash
-$ http https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK
+$ http https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK Accept:'application/json'
 ```
 
 Using `curl` and `jq`
 
 ```bash
-$ curl https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK | jq
+$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK | jq
 ```
 
 ```json
@@ -362,13 +386,13 @@ This service returns data on a given hostname/nameserver.
 Using `httpie`
 
 ```bash
-$ http http https://whois-api.dk-hostmaster.dk/host/auth01.ns.dk-hostmaster.dk
+$ http https://whois-api.dk-hostmaster.dk/host/auth01.ns.dk-hostmaster.dk Accept:'application/json'
 ```
 
 Using `curl` and `jq`
 
 ```bash
-$ curl http https://whois-api.dk-hostmaster.dk/host/auth01.ns.dk-hostmaster.dk | jq
+$ curl https://whois-api.dk-hostmaster.dk/host/auth01.ns.dk-hostmaster.dk | jq
 ```
 
 ```json
@@ -400,6 +424,153 @@ This service acts as a central entry points it relays to the above services:
 | `404` | Object not found |
 | `415` | Unsupported media type |
 
+<a name="domain-example"></a>
+### Domain Example 
+
+Using `httpie`
+
+```bash
+$ http https://whois-api.dk-hostmaster.dk/query/eksempel.dk Accept:'application/json'
+```
+
+Using `curl` and `jq`
+
+```bash
+$ curl https://whois-api.dk-hostmaster.dk/query/auth01.ns.dk-hostmaster.dk | jq
+```
+
+```json
+{
+    "admin": {
+        "attention": null,
+        "city": "København V",
+        "countryregionid": "DK",
+        "mobilephone": null,
+        "name": "DK HOSTMASTER A/S",
+        "phone": null,
+        "query_userid": "DKHM1-DK",
+        "street1": "Kalvebod Brygge 45, 3.",
+        "street2": null,
+        "street3": null,
+        "telefax": null,
+        "userid": "DKHM1-DK",
+        "useridtype": "V",
+        "validregistrant": "1",
+        "zipcode": "1560"
+    },
+    "admin_userid": "DKHM1-DK",
+    "createddate": "1999/05/17",
+    "dnssec": "J",
+    "domain": "eksempel.dk",
+    "domain_encoded": "eksempel.dk",
+    "domain_type": "V",
+    "message": "OK",
+    "nameservers": {
+        "auth01.ns.dk-hostmaster.dk": {
+            "domain": "eksempel.dk",
+            "domain_encoded": "eksempel.dk",
+            "hostname": "auth01.ns.dk-hostmaster.dk",
+            "hostname_encoded": "auth01.ns.dk-hostmaster.dk",
+            "zonecontact_userid": "DKHM1-DK"
+        },
+        "auth02.ns.dk-hostmaster.dk": {
+            "domain": "eksempel.dk",
+            "domain_encoded": "eksempel.dk",
+            "hostname": "auth02.ns.dk-hostmaster.dk",
+            "hostname_encoded": "auth02.ns.dk-hostmaster.dk",
+            "zonecontact_userid": "DKHM1-DK"
+        }
+    },
+    "paiduntildate": "2017/06/30",
+    "periodqty": "5",
+    "proxy_userid": "DKHM1-DK",
+    "public_deletedate": null,
+    "public_domain_status": "A",
+    "registrant": {
+        "attention": null,
+        "city": "København V",
+        "countryregionid": "DK",
+        "mobilephone": null,
+        "name": "DK HOSTMASTER A/S",
+        "phone": null,
+        "query_userid": "DKHM1-DK",
+        "street1": "Kalvebod Brygge 45, 3.",
+        "street2": null,
+        "street3": null,
+        "telefax": null,
+        "userid": "DKHM1-DK",
+        "useridtype": "V",
+        "validregistrant": "1",
+        "zipcode": "1560"
+    },
+    "registrant_userid": "DKHM1-DK",
+    "status": 200
+}
+```
+
+<a name="host-example"></a>
+### Host Example 
+
+Using `httpie`
+
+```bash
+$ http https://whois-api.dk-hostmaster.dk/query/auth01.ns.dk-hostmaster.dk Accept:'application/json'
+```
+
+Using `curl` and `jq`
+
+```bash
+$ curl https://whois-api.dk-hostmaster.dk/query/auth01.ns.dk-hostmaster.dk | jq
+```
+
+```json
+{
+    "glue_spooled": "J",
+    "hostname": "auth01.ns.dk-hostmaster.dk",
+    "hostname_encoded": "auth01.ns.dk-hostmaster.dk",
+    "message": "OK",
+    "nameserver_status": "A",
+    "status": 200,
+    "zonecontact_userid": "DKHM1-DK"
+}
+```
+
+<a name="handle-example"></a>
+### Handle Example 
+
+Using `httpie`
+
+```bash
+$ http https://whois-api.dk-hostmaster.dk/query/DKHM1-DK Accept:'application/json'
+```
+
+Using `curl` and `jq`
+
+```bash
+$ curl https://whois-api.dk-hostmaster.dk/query/DKHM1-DK | jq
+```
+
+```json
+{
+    "attention": null,
+    "city": "København V",
+    "countryregionid": "DK",
+    "message": "OK",
+    "mobilephone": null,
+    "name": "DK HOSTMASTER A/S",
+    "phone": null,
+    "query_userid": "DKHM1-DK",
+    "status": 200,
+    "street1": "Kalvebod Brygge 45, 3.",
+    "street2": null,
+    "street3": null,
+    "telefax": null,
+    "userid": "DKHM1-DK",
+    "useridtype": "V",
+    "validregistrant": "1",
+    "zipcode": "1560"
+}
+```
 
 <a name="resources"></a>
 # Resources
