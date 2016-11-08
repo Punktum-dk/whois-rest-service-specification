@@ -17,7 +17,7 @@ Revision: 1.0
 - [Features](#features)
 - [Implementation Limitations](#implementation-limitations)
     - [Localization](#localization)
-    - [Mediatype / Format](#mediatype--format)
+    - [Media-type / Format](#media-type--format)
     - [Encoding](#encoding)
     - [Rate Limiting](#rate-limiting)
 - [Service](#service)
@@ -98,10 +98,10 @@ The service implements the following features.
 
 In general the service is not localized and all WHOIS information is provided in English. 
 
-<a name="mediatype--format"></a>
-## Mediatype / Format
+<a name="media-type--format"></a>
+## Media-type / Format
 
-The service only supports JSON.
+The service only supports **JSON**.
 
 <a name="encoding"></a>
 ## Encoding
@@ -140,6 +140,60 @@ And a generic API:
 Which relays to the specific service APIs for the mapped entity being one of the ones listed above.
 
 The service requires that the accept header is specified to be `application/json`, all of the below examples demonstrates this using the commandline utilities `curl` or `httpie`.
+
+As described under Implementation Limitations, the service only supports **JSON**. This has to be specified using the **HTTP** header: `Accept`
+
+If the header is unspecified, not specified correctly or specified to an unsupported format, the service will error with HTTP status code: `415`
+
+```bash
+$ curl https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK 
+"Unsupported Media Type"
+```
+
+Correct specification using `curl` should be as follows:
+
+```bash
+> curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK
+{"attention":null,"city":"København V","countryregionid":"DK","message":"OK","mobilephone":null,"name":"DK HOSTMASTER A\/S","phone":null,"query_userid":"DKHM1-DK","status":200,"street1":"Kalvebod Brygge 45, 3.","street2":null,"street3":null,"telefax":null,"userid":"DKHM1-DK","useridtype":"V","validregistrant":"1","zipcode":"1560"}
+```
+
+And for `httpie`
+
+```bash
+$ http https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK Accept:'application/json'
+
+HTTP/1.1 200 OK
+Cache-Control: max-age=1, no-cache
+Connection: keep-alive
+Content-Encoding: gzip
+Content-Type: application/json;charset=UTF-8
+Date: Tue, 08 Nov 2016 10:19:18 GMT
+Server: nginx
+Strict-Transport-Security: max-age=15768000
+Transfer-Encoding: chunked
+Vary: Accept-Encoding
+Vary: Origin
+
+{
+    "attention": null,
+    "city": "København V",
+    "countryregionid": "DK",
+    "message": "OK",
+    "mobilephone": null,
+    "name": "DK HOSTMASTER A/S",
+    "phone": null,
+    "query_userid": "DKHM1-DK",
+    "status": 200,
+    "street1": "Kalvebod Brygge 45, 3.",
+    "street2": null,
+    "street3": null,
+    "telefax": null,
+    "userid": "DKHM1-DK",
+    "useridtype": "V",
+    "validregistrant": "1",
+    "zipcode": "1560"
+}
+```
 
 <a name="domain"></a>
 ## domain
