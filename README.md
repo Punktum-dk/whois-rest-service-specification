@@ -131,13 +131,13 @@ The service returns `200` if it can find a relevant object together with the pub
 Using `httpie`
 
 ```bash
-$ http http://localhost:3000/domain/eksempel.dk?format=json
+$ http http://localhost:3000/domain/eksempel.dk
 ```
 
 Using `curl` and `jq`
 
 ```bash
-$ curl http://localhost:3000/domain/eksempel.dk?format=json | jq
+$ curl http://localhost:3000/domain/eksempel.dk | jq
 ```
 
 ```json
@@ -234,13 +234,13 @@ The service returns `200` if it can find a relevant object holding the relevant 
 Using `httpie`
 
 ```bash
-$ http http://localhost:3000/domain/list/handle/DKHM1-DK/role/proxy?format=json
+$ http http://localhost:3000/domain/list/handle/DKHM1-DK/role/proxy
 ```
 
 Using `curl` and `jq`
 
 ```bash
-$ curl http://localhost:3000/domain/list/handle/DKHM1-DK/role/proxy?format=json | jq
+$ curl http://localhost:3000/domain/list/handle/DKHM1-DK/role/proxy | jq
 ```
 
 ```json
@@ -302,13 +302,13 @@ This service returns data on a given handle/user-id.
 Using `httpie`
 
 ```bash
-$ http http://localhost:3000/handle/DKHM1-DK?format=json
+$ http http://localhost:3000/handle/DKHM1-DK
 ```
 
 Using `curl` and `jq`
 
 ```bash
-$ curl http://localhost:3000/handle/DKHM1-DK?format=json | jq
+$ curl http://localhost:3000/handle/DKHM1-DK | jq
 ```
 
 ```json
@@ -353,13 +353,13 @@ This service returns data on a given hostname/nameserver.
 Using `httpie`
 
 ```bash
-$ http http://localhost:3000/host/ns1.eksempel.dk?format=json
+$ http http://localhost:3000/host/ns1.eksempel.dk
 ```
 
 Using `curl` and `jq`
 
 ```bash
-$ curl http://localhost:3000/host/ns1.eksempel.dk?format=json | jq
+$ curl http://localhost:3000/host/ns1.eksempel.dk | jq
 ```
 
 ```json
