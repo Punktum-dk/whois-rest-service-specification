@@ -134,6 +134,7 @@ The service returns `200` if it can find a relevant object together with the pub
 | `200` | OK |
 | `400` | Bad request |
 | `404` | Object not found |
+| `415` | Unsupported media type |
 
 <a name="example"></a>
 ### Example
@@ -282,6 +283,7 @@ $ curl https://whois-api.dk-hostmaster.dk/domain/list/handle/DKHM1-DK/role/proxy
 | `200` | OK |
 | `400` | Bad request |
 | `404` | Object not found |
+| `415` | Unsupported media type |
 
 <a name="handle"></a>
 ## handle
@@ -298,6 +300,7 @@ This service returns data on a given handle/user-id.
 | `200` | OK |
 | `400` | Bad request |
 | `404` | Object not found |
+| `415` | Unsupported media type |
 
 <a name="eksempel"></a>
 ### Eksempel
@@ -351,6 +354,7 @@ This service returns data on a given hostname/nameserver.
 | `200` | OK |
 | `400` | Bad request |
 | `404` | Object not found |
+| `415` | Unsupported media type |
 
 <a name="example-2"></a>
 ### Example
