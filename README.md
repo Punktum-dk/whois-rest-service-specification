@@ -141,13 +141,13 @@ The service returns `200` if it can find a relevant object together with the pub
 Using `httpie`
 
 ```bash
-$ http https://whois-api.dk-hostmaster.dk/info@dk-hostmaster.dk/domain/eksempel.dk
+$ http https://whois-api.dk-hostmaster.dk/domain/eksempel.dk
 ```
 
 Using `curl` and `jq`
 
 ```bash
-$ curl https://whois-api.dk-hostmaster.dk/info@dk-hostmaster.dk/domain/eksempel.dk | jq
+$ curl https://whois-api.dk-hostmaster.dk/domain/eksempel.dk | jq
 ```
 
 ```json
@@ -244,13 +244,13 @@ The service returns `200` if it can find a relevant object holding the relevant 
 Using `httpie`
 
 ```bash
-$ http https://whois-api.dk-hostmaster.dk/info@dk-hostmaster.dk/domain/list/handle/DKHM1-DK/role/proxy
+$ http https://whois-api.dk-hostmaster.dk/domain/list/handle/DKHM1-DK/role/proxy
 ```
 
 Using `curl` and `jq`
 
 ```bash
-$ curl https://whois-api.dk-hostmaster.dk/info@dk-hostmaster.dk/domain/list/handle/DKHM1-DK/role/proxy | jq
+$ curl https://whois-api.dk-hostmaster.dk/domain/list/handle/DKHM1-DK/role/proxy | jq
 ```
 
 ```json
@@ -312,13 +312,13 @@ This service returns data on a given handle/user-id.
 Using `httpie`
 
 ```bash
-$ http https://whois-api.dk-hostmaster.dk/info@dk-hostmaster.dk/handle/DKHM1-DK
+$ http https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK
 ```
 
 Using `curl` and `jq`
 
 ```bash
-$ curl https://whois-api.dk-hostmaster.dk/info@dk-hostmaster.dk/handle/DKHM1-DK | jq
+$ curl https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK | jq
 ```
 
 ```json
@@ -363,13 +363,13 @@ This service returns data on a given hostname/nameserver.
 Using `httpie`
 
 ```bash
-$ http https://whois-api.dk-hostmaster.dk/info@dk-hostmaster.dk/host/ns1.eksempel.dk
+$ http https://whois-api.dk-hostmaster.dk/host/ns1.eksempel.dk
 ```
 
 Using `curl` and `jq`
 
 ```bash
-$ curl https://whois-api.dk-hostmaster.dk/info@dk-hostmaster.dk/host/ns1.eksempel.dk | jq
+$ curl https://whois-api.dk-hostmaster.dk/host/ns1.eksempel.dk | jq
 ```
 
 ```json
