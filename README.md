@@ -153,77 +153,68 @@ $ curl https://whois-api.dk-hostmaster.dk/domain/eksempel.dk | jq
 ```json
 {
     "admin": {
-        "attention": null, 
-        "city": "København V.", 
-        "countryregionid": "DK", 
-        "email": "test@dk-hostmaster.dk", 
-        "name": "DK Hostmaster A/S", 
-        "phone": "+45 33 64 60 60", 
-        "publicstatus": "J", 
-        "street1": "Kalvebod Brygge 45, 3.", 
-        "street2": null, 
-        "street3": null, 
-        "telefax": "+45 33 64 60 66", 
-        "userid": "DKHM1-DK", 
+        "attention": null,
+        "city": "København V",
+        "countryregionid": "DK",
+        "mobilephone": null,
+        "name": "DK HOSTMASTER A/S",
+        "phone": null,
+        "query_userid": "DKHM1-DK",
+        "street1": "Kalvebod Brygge 45, 3.",
+        "street2": null,
+        "street3": null,
+        "telefax": null,
+        "userid": "DKHM1-DK",
+        "useridtype": "V",
+        "validregistrant": "1",
         "zipcode": "1560"
-    }, 
-    "createddate": "2016-07-05", 
-    "dnssec": "J", 
-    "domain": "eksempel.dk", 
-    "domain_encoded": "eksempel.dk", 
-    "domain_type": null, 
-    "message": "OK", 
+    },
+    "admin_userid": "DKHM1-DK",
+    "createddate": "1999/05/17",
+    "dnssec": "J",
+    "domain": "eksempel.dk",
+    "domain_encoded": "eksempel.dk",
+    "domain_type": "V",
+    "message": "OK",
     "nameservers": {
-        "ns1.eksempel.dk": {
-            "domain": "eksempel.dk", 
-            "domain_encoded": "eksempel.dk", 
-            "hostname": "ns1.eksempel.dk", 
-            "hostname_encoded": "ns1.eksempel.dk", 
+        "auth01.ns.dk-hostmaster.dk": {
+            "domain": "eksempel.dk",
+            "domain_encoded": "eksempel.dk",
+            "hostname": "auth01.ns.dk-hostmaster.dk",
+            "hostname_encoded": "auth01.ns.dk-hostmaster.dk",
             "zonecontact_userid": "DKHM1-DK"
-        }, 
-        "ns1.xn--4cabco7dk5a.dk": {
-            "domain": "eksempel.dk", 
-            "domain_encoded": "eksempel.dk", 
-            "hostname": "ns1.æøåöäüé.dk", 
-            "hostname_encoded": "ns1.xn--4cabco7dk5a.dk", 
-            "zonecontact_userid": "DKHM1-DK"
-        }, 
-        "ns2.eksempel.dk": {
-            "domain": "eksempel.dk", 
-            "domain_encoded": "eksempel.dk", 
-            "hostname": "ns2.eksempel.dk", 
-            "hostname_encoded": "ns2.eksempel.dk", 
-            "zonecontact_userid": "DKHM1-DK"
-        }, 
-        "ns2.xn--4cabco7dk5a.dk": {
-            "domain": "eksempel.dk", 
-            "domain_encoded": "eksempel.dk", 
-            "hostname": "ns2.æøåöäüé.dk", 
-            "hostname_encoded": "ns2.xn--4cabco7dk5a.dk", 
+        },
+        "auth02.ns.dk-hostmaster.dk": {
+            "domain": "eksempel.dk",
+            "domain_encoded": "eksempel.dk",
+            "hostname": "auth02.ns.dk-hostmaster.dk",
+            "hostname_encoded": "auth02.ns.dk-hostmaster.dk",
             "zonecontact_userid": "DKHM1-DK"
         }
-    }, 
-    "paiduntildate": "2021-07-05", 
-    "periodqty": 5, 
-    "proxy_userid": "DKHM1-DK", 
-    "public_deletedate": null, 
-    "public_domain_status": "A", 
+    },
+    "paiduntildate": "2017/06/30",
+    "periodqty": "5",
+    "proxy_userid": "DKHM1-DK",
+    "public_deletedate": null,
+    "public_domain_status": "A",
     "registrant": {
-        "attention": null, 
-        "city": "København V.", 
-        "countryregionid": "DK", 
-        "email": "test@dk-hostmaster.dk", 
-        "name": "DK Hostmaster A/S", 
-        "phone": "+45 33 64 60 60", 
-        "publicstatus": "J", 
-        "street1": "Kalvebod Brygge 45, 3.", 
-        "street2": null, 
-        "street3": null, 
-        "telefax": "+45 33 64 60 66", 
-        "userid": "DKHM1-DK", 
+        "attention": null,
+        "city": "København V",
+        "countryregionid": "DK",
+        "mobilephone": null,
+        "name": "DK HOSTMASTER A/S",
+        "phone": null,
+        "query_userid": "DKHM1-DK",
+        "street1": "Kalvebod Brygge 45, 3.",
+        "street2": null,
+        "street3": null,
+        "telefax": null,
+        "userid": "DKHM1-DK",
+        "useridtype": "V",
+        "validregistrant": "1",
         "zipcode": "1560"
-    }, 
-    "registrant_userid": "DKHM1-DK", 
+    },
+    "registrant_userid": "DKHM1-DK",
     "status": 200
 }
 ```
@@ -255,31 +246,33 @@ $ curl https://whois-api.dk-hostmaster.dk/domain/list/handle/DKHM1-DK/role/proxy
 
 ```json
 {
-    "attention": null, 
-    "city": "København V.", 
-    "countryregionid": "DK", 
+    "attention": null,
+    "city": "København V",
+    "countryregionid": "DK",
     "domains": [
         {
-            "domain": "eksempel.dk", 
+            "domain": "eksempel.dk",
             "domain_encoded": "eksempel.dk"
-        }, 
+        },
         {
-            "domain": "æøåöäüé.dk", 
+            "domain": "æøåöäüé.dk",
             "domain_encoded": "xn--4cabco7dk5a.dk"
         }
-    ], 
-    "email": "test@dk-hostmaster.dk", 
-    "message": "OK", 
-    "name": "DK Hostmaster A/S", 
-    "phone": "+45 33 64 60 60", 
-    "publicstatus": "J", 
-    "role": "proxy", 
-    "status": 200, 
-    "street1": "Kalvebod Brygge 45, 3.", 
-    "street2": null, 
-    "street3": null, 
-    "telefax": "+45 33 64 60 66", 
-    "userid": "DKHM1-DK", 
+    ],
+    "message": "OK",
+    "mobilephone": null,
+    "name": "DK HOSTMASTER A/S",
+    "phone": null,
+    "query_userid": "DKHM1-DK",
+    "role": "proxy",
+    "status": 200,
+    "street1": "Kalvebod Brygge 45, 3.",
+    "street2": null,
+    "street3": null,
+    "telefax": null,
+    "userid": "DKHM1-DK",
+    "useridtype": "V",
+    "validregistrant": "1",
     "zipcode": "1560"
 }
 ```
@@ -323,21 +316,23 @@ $ curl https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK | jq
 
 ```json
 {
-    attention: null,
-    city: "København V.",
-    countryregionid: "DK",
-    email: "test@dk-hostmaster.dk",
-    message: "OK",
-    name: "DK Hostmaster A/S",
-    phone: "+45 33 64 60 60",
-    publicstatus: "J",
-    status: 200,
-    street1: "Kalvebod Brygge 45, 3.",
-    street2: null,
-    street3: null,
-    telefax: "+45 33 64 60 66",
-    userid: "DKHM1-DK",
-    zipcode: "1560"
+    "attention": null,
+    "city": "København V",
+    "countryregionid": "DK",
+    "message": "OK",
+    "mobilephone": null,
+    "name": "DK HOSTMASTER A/S",
+    "phone": null,
+    "query_userid": "DKHM1-DK",
+    "status": 200,
+    "street1": "Kalvebod Brygge 45, 3.",
+    "street2": null,
+    "street3": null,
+    "telefax": null,
+    "userid": "DKHM1-DK",
+    "useridtype": "V",
+    "validregistrant": "1",
+    "zipcode": "1560"
 }
 ```
 
@@ -363,24 +358,24 @@ This service returns data on a given hostname/nameserver.
 Using `httpie`
 
 ```bash
-$ http https://whois-api.dk-hostmaster.dk/host/ns1.eksempel.dk
+$ http http https://whois-api.dk-hostmaster.dk/host/auth01.ns.dk-hostmaster.dk
 ```
 
 Using `curl` and `jq`
 
 ```bash
-$ curl https://whois-api.dk-hostmaster.dk/host/ns1.eksempel.dk | jq
+$ curl http https://whois-api.dk-hostmaster.dk/host/auth01.ns.dk-hostmaster.dk | jq
 ```
 
 ```json
 {
-    glue_spooled: "172.168.1.1",
-    hostname: "ns1.eksempel.dk",
-    hostname_encoded: "ns1.eksempel.dk",
-    message: "OK",
-    nameserver_status: "A",
-    status: 200,
-    zonecontact_userid: "DKHM1-DK"
+    "glue_spooled": "J",
+    "hostname": "auth01.ns.dk-hostmaster.dk",
+    "hostname_encoded": "auth01.ns.dk-hostmaster.dk",
+    "message": "OK",
+    "nameserver_status": "A",
+    "status": 200,
+    "zonecontact_userid": "DKHM1-DK"
 }
 ```
 
