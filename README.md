@@ -67,7 +67,7 @@ This document is copyright by DK Hostmaster A/S and is licensed under the MIT Li
 
 DK Hostmaster is the registry for the ccTLD for Denmark (dk). The current model used in Denmark is based on a sole registry, with DK Hostmaster maintaining the central DNS registry.
 
-The WHOIS service offered by DK Hostmaster A/S aims to adhere to the WHOIS standard (see also [RFC:3912]).
+The WHOIS service offered by DK Hostmaster A/S aims to adhere to the WHOIS standard (see also [RFC:3912][RFC:3912]).
 
 <a name="features"></a>
 # Features
@@ -444,5 +444,6 @@ The services hold their own table of return codes, this is just a curated list t
 | `500` | Internal server error |
 
 [RFC:3492]: https://tools.ietf.org/html/rfc3492
+[RFC:3912]: https://tools.ietf.org/html/rfc3912
 [RFC:3986]: https://tools.ietf.org/html/rfc3986 
 
