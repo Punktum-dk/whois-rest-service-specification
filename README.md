@@ -16,6 +16,8 @@ Revision: 1.0
 - [The .dk Registry in Brief](#the-dk-registry-in-brief)
 - [Features](#features)
 - [Implementation Limitations](#implementation-limitations)
+    - [Localization](#localization)
+    - [Mediatype / Format](#mediatype--format)
     - [Encoding](#encoding)
     - [Rate Limiting](#rate-limiting)
 - [Service](#service)
@@ -81,7 +83,15 @@ The service implements the following features.
 <a name="implementation-limitations"></a>
 # Implementation Limitations
 
+<a name="localization"></a>
+## Localization
+
 In general the service is not localized and all WHOIS information is provided in English. 
+
+<a name="mediatype--format"></a>
+## Mediatype / Format
+
+The service only supports JSON.
 
 <a name="encoding"></a>
 ## Encoding
