@@ -20,6 +20,7 @@ Revision: 1.0
     - [Media-type / Format](#media-type--format)
     - [Encoding](#encoding)
     - [Rate Limiting](#rate-limiting)
+    - [Security](#security)
 - [Service](#service)
     - [domain](#domain)
         - [API](#api)
@@ -50,9 +51,9 @@ Revision: 1.0
 <a name="introduction"></a>
 # Introduction
 
-This document describes and specifies the implementation offered by DK Hostmaster A/S for interaction with the central registry for the ccTLD dk using the WHOIS Service. It is primarily aimed at a technical audience, and the reader is required to have prior knowledge of the WHOIS protocol and possibly DNS registration.
+This document describes and specifies the a RESTful alternative to the WHOIS implementation offered by DK Hostmaster A/S. It is primarily aimed at a technical audience and the reader is required to have prior knowledge of the WHOIS protocol and possibly DNS registration.
 
-The WHOIS service in not optimal for structured querying, both due to the lack of structure in the protocol specification and due to the constraints on the public service offered by DK Hostmaster. If you are a registrar, you might be interested in [the DK Hostmaster Domain Availability Service (DAS)](https://github.com/DK-Hostmaster/das-service-specification) as an alternative.
+The WHOIS RESTful service is optimized for structured querying in contrast to it's text-based origin implementing the [WHOIS service](https://github.com/DK-Hostmaster/whois-service-specification) responding on port 43,
 
 <a name="about-this-document"></a>
 # About this Document
@@ -124,8 +125,17 @@ In addition the service only allow 1 TCP-connection per. (IPv4)/24.
 
 Meaning that `192.0.2.41` and `192.0.2.52` can not have simultanous connections, but `192.0.2.41` and `192.0.3.52` can.
 
+<a name="security"></a>
+## Security
+
+The service is only available under **TLS 1.2**
+
 <a name="service"></a>
 # Service
+
+The service is available at:
+
+- `https://whois-api.dk-hostmaster.dk`
 
 The service offers four APIs, one specialized for each entity type:
 
