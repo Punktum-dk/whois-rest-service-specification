@@ -213,7 +213,7 @@ This service returns data on a given domain name.
 <a name="api"></a>
 ### API
 
-    https://whois.dk-hostmaster.dk/domain/{domainname}
+    https://whois-api.dk-hostmaster.dk/domain/{domainname}
 
 The service returns `200` if it can find a relevant object together with the public data.
 
@@ -314,7 +314,7 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/do
 <a name="api-1"></a>
 ### API
 
-    https://whois.dk-hostmaster.dk/domain/list/userid/{handle}/{role}
+    https://whois-api.dk-hostmaster.dk/domain/list/userid/{handle}/{role}
 
 The service returns `200` if it can find a relevant object holding the relevant role.
 
@@ -381,7 +381,7 @@ This service returns data on a given handle/user-id.
 <a name="api-2"></a>
 ### API
 
-    https://whois.dk-hostmaster.dk/handle/{userid}
+    https://whois-api.dk-hostmaster.dk/handle/{userid}
 
 | Return Code  | Description |
 | ------------ | ------------ |
@@ -435,7 +435,7 @@ This service returns data on a given hostname/nameserver.
 <a name="api-3"></a>
 ### API
 
-    https://whois.dk-hostmaster.dk/host/{hostname}
+    https://whois-api.dk-hostmaster.dk/host/{hostname}
 
 | Return Code  | Description |
 | ------------ | ------------ |
@@ -479,7 +479,7 @@ This service acts as a central entry points it relays to the above services:
 <a name="api-4"></a>
 ### API
 
-    https://whois.dk-hostmaster.dk/#query
+    https://whois-api.dk-hostmaster.dk/#query
 
 | Return Code  | Description |
 | ------------ | ------------ |
