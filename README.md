@@ -500,7 +500,7 @@ $ http https://whois-api.dk-hostmaster.dk/query/eksempel.dk Accept:'application/
 Using `curl` and `jq`
 
 ```bash
-$ curl https://whois-api.dk-hostmaster.dk/query/auth01.ns.dk-hostmaster.dk | jq
+$ curl https://whois-api.dk-hostmaster.dk/query/eksempel.dk | jq
 ```
 
 ```json
