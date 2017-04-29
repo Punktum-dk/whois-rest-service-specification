@@ -97,7 +97,7 @@ The service implements the following features.
 <a name="localization"></a>
 ## Localization
 
-In general the service is not localized and all WHOIS information is provided in English. 
+In general the service is not localized and all WHOIS information is provided in English.
 
 <a name="media-type--format"></a>
 ## Media-type / Format
@@ -117,7 +117,7 @@ The service supports the following encodings:
 <a name="rate-limiting"></a>
 ## Rate Limiting
 
-We only allow a certain number of requests per minute. We reserve the right to adjust the rate limit in order to provide a high quality of service. 
+We only allow a certain number of requests per minute. We reserve the right to adjust the rate limit in order to provide a high quality of service.
 
 Current limit is set to 1 request per second.
 
@@ -156,14 +156,14 @@ As described under Implementation Limitations, the service only supports **JSON*
 If the header is unspecified, not specified correctly or specified to an unsupported format, the service will error with HTTP status code: `415`
 
 ```bash
-$ curl https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK 
+$ curl https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK
 "Unsupported Media Type"
 ```
 
 Correct specification using `curl` should be as follows:
 
 ```bash
-> curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK
+> curl -H "Accept: application/json" https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK
 {"attention":null,"city":"København V","countryregionid":"DK","message":"OK","mobilephone":null,"name":"DK HOSTMASTER A\/S","phone":null,"query_userid":"DKHM1-DK","status":200,"street1":"Kalvebod Brygge 45, 3.","street2":null,"street3":null,"telefax":null,"userid":"DKHM1-DK","useridtype":"V","validregistrant":"1","zipcode":"1560"}
 ```
 
@@ -236,7 +236,7 @@ $ http https://whois-api.dk-hostmaster.dk/domain/eksempel.dk Accept:'application
 Using `curl` and `jq`
 
 ```bash
-$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/domain/eksempel.dk | jq
+$ curl -H "Accept: application/json" https://whois-api.dk-hostmaster.dk/domain/eksempel.dk | jq
 ```
 
 ```json
@@ -330,7 +330,7 @@ $ http https://whois-api.dk-hostmaster.dk/domain/list/handle/DKHM1-DK/role/proxy
 Using `curl` and `jq`
 
 ```bash
-$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/domain/list/handle/DKHM1-DK/role/proxy | jq
+$ curl -H "Accept: application/json" https://whois-api.dk-hostmaster.dk/domain/list/handle/DKHM1-DK/role/proxy | jq
 ```
 
 ```json
@@ -402,7 +402,7 @@ $ http https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK Accept:'application/js
 Using `curl` and `jq`
 
 ```bash
-$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK | jq
+$ curl -H "Accept: application/json" https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK | jq
 ```
 
 ```json
@@ -456,7 +456,7 @@ $ http https://whois-api.dk-hostmaster.dk/host/auth01.ns.dk-hostmaster.dk Accept
 Using `curl` and `jq`
 
 ```bash
-$ curl https://whois-api.dk-hostmaster.dk/host/auth01.ns.dk-hostmaster.dk | jq
+$ curl -H "Accept: application/json" https://whois-api.dk-hostmaster.dk/host/auth01.ns.dk-hostmaster.dk | jq
 ```
 
 ```json
@@ -489,7 +489,7 @@ This service acts as a central entry points it relays to the above services:
 | `415` | Unsupported media type |
 
 <a name="domain-example"></a>
-### Domain Example 
+### Domain Example
 
 Using `httpie`
 
@@ -500,7 +500,7 @@ $ http https://whois-api.dk-hostmaster.dk/query/eksempel.dk Accept:'application/
 Using `curl` and `jq`
 
 ```bash
-$ curl https://whois-api.dk-hostmaster.dk/query/auth01.ns.dk-hostmaster.dk | jq
+$ curl -H "Accept: application/json" https://whois-api.dk-hostmaster.dk/query/eksempel.dk | jq
 ```
 
 ```json
@@ -573,7 +573,7 @@ $ curl https://whois-api.dk-hostmaster.dk/query/auth01.ns.dk-hostmaster.dk | jq
 ```
 
 <a name="host-example"></a>
-### Host Example 
+### Host Example
 
 Using `httpie`
 
@@ -584,7 +584,7 @@ $ http https://whois-api.dk-hostmaster.dk/query/auth01.ns.dk-hostmaster.dk Accep
 Using `curl` and `jq`
 
 ```bash
-$ curl https://whois-api.dk-hostmaster.dk/query/auth01.ns.dk-hostmaster.dk | jq
+$ curl -H "Accept: application/json" https://whois-api.dk-hostmaster.dk/query/auth01.ns.dk-hostmaster.dk | jq
 ```
 
 ```json
@@ -600,7 +600,7 @@ $ curl https://whois-api.dk-hostmaster.dk/query/auth01.ns.dk-hostmaster.dk | jq
 ```
 
 <a name="handle-example"></a>
-### Handle Example 
+### Handle Example
 
 Using `httpie`
 
@@ -611,7 +611,7 @@ $ http https://whois-api.dk-hostmaster.dk/query/DKHM1-DK Accept:'application/jso
 Using `curl` and `jq`
 
 ```bash
-$ curl https://whois-api.dk-hostmaster.dk/query/DKHM1-DK | jq
+$ curl -H "Accept: application/json" https://whois-api.dk-hostmaster.dk/query/DKHM1-DK | jq
 ```
 
 ```json
@@ -680,5 +680,5 @@ The services hold their own table of return codes, this is just a curated list t
 
 [RFC:3492]: https://tools.ietf.org/html/rfc3492
 [RFC:3912]: https://tools.ietf.org/html/rfc3912
-[RFC:3986]: https://tools.ietf.org/html/rfc3986 
+[RFC:3986]: https://tools.ietf.org/html/rfc3986
 
