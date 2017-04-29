@@ -456,7 +456,7 @@ $ http https://whois-api.dk-hostmaster.dk/host/auth01.ns.dk-hostmaster.dk Accept
 Using `curl` and `jq`
 
 ```bash
-$ curl https://whois-api.dk-hostmaster.dk/host/auth01.ns.dk-hostmaster.dk | jq
+$ curl -H "Accept: application/json" https://whois-api.dk-hostmaster.dk/host/auth01.ns.dk-hostmaster.dk | jq
 ```
 
 ```json
@@ -500,7 +500,7 @@ $ http https://whois-api.dk-hostmaster.dk/query/eksempel.dk Accept:'application/
 Using `curl` and `jq`
 
 ```bash
-$ curl https://whois-api.dk-hostmaster.dk/query/auth01.ns.dk-hostmaster.dk | jq
+$ curl -H "Accept: application/json" https://whois-api.dk-hostmaster.dk/query/eksempel.dk | jq
 ```
 
 ```json
@@ -584,7 +584,7 @@ $ http https://whois-api.dk-hostmaster.dk/query/auth01.ns.dk-hostmaster.dk Accep
 Using `curl` and `jq`
 
 ```bash
-$ curl https://whois-api.dk-hostmaster.dk/query/auth01.ns.dk-hostmaster.dk | jq
+$ curl -H "Accept: application/json" https://whois-api.dk-hostmaster.dk/query/auth01.ns.dk-hostmaster.dk | jq
 ```
 
 ```json
@@ -611,7 +611,7 @@ $ http https://whois-api.dk-hostmaster.dk/query/DKHM1-DK Accept:'application/jso
 Using `curl` and `jq`
 
 ```bash
-$ curl https://whois-api.dk-hostmaster.dk/query/DKHM1-DK | jq
+$ curl -H "Accept: application/json" https://whois-api.dk-hostmaster.dk/query/DKHM1-DK | jq
 ```
 
 ```json
