@@ -163,7 +163,7 @@ $ curl https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK
 Correct specification using `curl` should be as follows:
 
 ```bash
-> curl -H "Accept: application/json" https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK
+> curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK
 {"attention":null,"city":"København V","countryregionid":"DK","message":"OK","mobilephone":null,"name":"DK HOSTMASTER A\/S","phone":null,"query_userid":"DKHM1-DK","status":200,"street1":"Kalvebod Brygge 45, 3.","street2":null,"street3":null,"telefax":null,"userid":"DKHM1-DK","useridtype":"V","validregistrant":"1","zipcode":"1560"}
 ```
 
@@ -236,7 +236,7 @@ $ http https://whois-api.dk-hostmaster.dk/domain/eksempel.dk Accept:'application
 Using `curl` and `jq`
 
 ```bash
-$ curl -H "Accept: application/json" https://whois-api.dk-hostmaster.dk/domain/eksempel.dk | jq
+$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/domain/eksempel.dk | jq
 ```
 
 ```json
@@ -330,7 +330,7 @@ $ http https://whois-api.dk-hostmaster.dk/domain/list/handle/DKHM1-DK/role/proxy
 Using `curl` and `jq`
 
 ```bash
-$ curl -H "Accept: application/json" https://whois-api.dk-hostmaster.dk/domain/list/handle/DKHM1-DK/role/proxy | jq
+$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/domain/list/handle/DKHM1-DK/role/proxy | jq
 ```
 
 ```json
@@ -402,7 +402,7 @@ $ http https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK Accept:'application/js
 Using `curl` and `jq`
 
 ```bash
-$ curl -H "Accept: application/json" https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK | jq
+$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK | jq
 ```
 
 ```json
