@@ -32,10 +32,10 @@ Revision: 1.1
     - [Example](#example-1)
   - [handle](#handle)
     - [API](#api-2)
-    - [Eksempel](#eksempel)
+    - [Example](#example-2)
   - [host](#host)
     - [API](#api-3)
-    - [Example](#example-2)
+    - [Example](#example-3)
   - [query](#query)
     - [API](#api-4)
     - [Domain Example](#domain-example)
@@ -125,7 +125,7 @@ Current limit is set to 1 request per second.
 
 In addition the service only allow 1 TCP-connection per. (IPv4)/24.
 
-Meaning that `192.0.2.41` and `192.0.2.52` can not have simultanous connections, but `192.0.2.41` and `192.0.3.52` can.
+Meaning that `192.0.2.41` and `192.0.2.52` can not have simultaneous connections, but `192.0.2.41` and `192.0.3.52` can.
 
 <a id="security"></a>
 ## Security
@@ -141,8 +141,8 @@ The service is available at:
 
 The service offers four APIs, one specialized for each entity type:
 
-- domain (domainname)
-- host (hostname/nameserver)
+- domain (domain name)
+- host (hostname/name server)
 - handle (userid)
 
 And a generic API:
@@ -151,7 +151,7 @@ And a generic API:
 
 Which relays to the specific service APIs for the mapped entity being one of the ones listed above.
 
-The service requires that the accept header is specified to be `application/json`, all of the below examples demonstrates this using the commandline utilities `curl` or `httpie`.
+The service requires that the accept header is specified to be `application/json`, all of the below examples demonstrates this using the command line utilities `curl` or `httpie`.
 
 As described under Implementation Limitations, the service only supports **JSON**. This has to be specified using the **HTTP** header: `Accept`
 
@@ -392,8 +392,8 @@ This service returns data on a given handle/user-id.
 | `404` | Object not found |
 | `415` | Unsupported media type |
 
-<a id="eksempel"></a>
-### Eksempel
+<a id="example-2"></a>
+### Example
 
 Using `httpie`
 
@@ -432,7 +432,7 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/ha
 <a id="host"></a>
 ## host
 
-This service returns data on a given hostname/nameserver.
+This service returns data on a given hostname/name server.
 
 <a id="api-3"></a>
 ### API
@@ -446,7 +446,7 @@ This service returns data on a given hostname/nameserver.
 | `404` | Object not found |
 | `415` | Unsupported media type |
 
-<a id="example-2"></a>
+<a id="example-3"></a>
 ### Example
 
 Using `httpie`
