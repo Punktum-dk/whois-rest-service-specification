@@ -316,9 +316,9 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/do
 <a id="api-1"></a>
 ### API
 
-    https://whois-api.dk-hostmaster.dk/domain/list/userid/{handle}/{role}
+    https://whois-api.dk-hostmaster.dk/domain/list/handle/{userid}/role/{role}
 
-The service returns `200` if it can find a relevant object holding the relevant role.
+The service returns `200` if it can find a relevant object holding the relevant role. Supported role types values are: _registrant_ and _proxy_ only.
 
 <a id="example-1"></a>
 ### Example
