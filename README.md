@@ -1,3 +1,5 @@
+![DK Hostmaster Logo](https://www.dk-hostmaster.dk/sites/default/files/dk-logo_0.png)
+
 # DK Hostmaster RESTful WHOIS Service Specification
 
 2017/05/01
@@ -7,55 +9,55 @@ Revision: 1.1
 
 # Table of Contents
 
-<!-- MarkdownTOC depth=3 -->
+<!-- MarkdownTOC bracket=round levels="1,2,3, 4" indent="  " -->
 
 - [Introduction](#introduction)
 - [About this Document](#about-this-document)
-    - [License](#license)
-    - [Document History](#document-history)
+  - [License](#license)
+  - [Document History](#document-history)
 - [The .dk Registry in Brief](#the-dk-registry-in-brief)
 - [Features](#features)
 - [Implementation Limitations](#implementation-limitations)
-    - [Localization](#localization)
-    - [Media-type / Format](#media-type--format)
-    - [Encoding](#encoding)
-    - [Rate Limiting](#rate-limiting)
-    - [Security](#security)
+  - [Localization](#localization)
+  - [Media-type / Format](#media-type--format)
+  - [Encoding](#encoding)
+  - [Rate Limiting](#rate-limiting)
+  - [Security](#security)
 - [Service](#service)
-    - [domain](#domain)
-        - [API](#api)
-        - [Example](#example)
-    - [domain list](#domain-list)
-        - [API](#api-1)
-        - [Example](#example-1)
-    - [handle](#handle)
-        - [API](#api-2)
-        - [Eksempel](#eksempel)
-    - [host](#host)
-        - [API](#api-3)
-        - [Example](#example-2)
-    - [query](#query)
-        - [API](#api-4)
-        - [Domain Example](#domain-example)
-        - [Host Example](#host-example)
-        - [Handle Example](#handle-example)
+  - [domain](#domain)
+    - [API](#api)
+    - [Example](#example)
+  - [domain list](#domain-list)
+    - [API](#api-1)
+    - [Example](#example-1)
+  - [handle](#handle)
+    - [API](#api-2)
+    - [Eksempel](#eksempel)
+  - [host](#host)
+    - [API](#api-3)
+    - [Example](#example-2)
+  - [query](#query)
+    - [API](#api-4)
+    - [Domain Example](#domain-example)
+    - [Host Example](#host-example)
+    - [Handle Example](#handle-example)
 - [Resources](#resources)
-    - [Mailing list](#mailing-list)
-    - [Issue Reporting](#issue-reporting)
-    - [Additional Information](#additional-information)
+  - [Mailing list](#mailing-list)
+  - [Issue Reporting](#issue-reporting)
+  - [Additional Information](#additional-information)
 - [Appendices](#appendices)
-    - [HTTP Status Codes](#http-status-codes)
+  - [HTTP Status Codes](#http-status-codes)
 
 <!-- /MarkdownTOC -->
 
-<a name="introduction"></a>
+<a id="introduction"></a>
 # Introduction
 
 This document describes and specifies the a RESTful alternative to the WHOIS implementation offered by DK Hostmaster A/S. It is primarily aimed at a technical audience and the reader is required to have prior knowledge of the WHOIS protocol and possibly DNS registration.
 
 The WHOIS RESTful service is optimized for structured querying in contrast to it's text-based origin implementing the [WHOIS service](https://github.com/DK-Hostmaster/whois-service-specification) responding on port 43,
 
-<a name="about-this-document"></a>
+<a id="about-this-document"></a>
 # About this Document
 
 This specification describes version 1 (1.0.x) of the DK Hostmaster WHOIS RESTful service implementation. Future releases will be reflected in updates to this specification, please see the document history section below.
@@ -64,23 +66,23 @@ Any future extensions and possible additions and changes to the implementation a
 
 Printable version can be obtained via [this link](https://gitprint.com/DK-Hostmaster/whois-rest-service-specification/blob/master/README.md), using the gitprint service.
 
-<a name="license"></a>
+<a id="license"></a>
 ## License
 
 This document is copyright by DK Hostmaster A/S and is licensed under the MIT License, please see the separate LICENSE file for details.
 
-<a name="document-history"></a>
+<a id="document-history"></a>
 ## Document History
 
-* 1.0 2016-11-08
-  * Initial revision
+- 1.0 2016-11-08
+  - Initial revision
 
-<a name="the-dk-registry-in-brief"></a>
+<a id="the-dk-registry-in-brief"></a>
 # The .dk Registry in Brief
 
 DK Hostmaster is the registry for the ccTLD for Denmark (dk). The current model used in Denmark is based on a sole registry, with DK Hostmaster maintaining the central DNS registry.
 
-<a name="features"></a>
+<a id="features"></a>
 # Features
 
 The service implements the following features.
@@ -91,20 +93,20 @@ The service implements the following features.
 - Support for multiple encodings (see: [Encoding](#encoding) below)
 - Support for both IPv6 and IPv6
 
-<a name="implementation-limitations"></a>
+<a id="implementation-limitations"></a>
 # Implementation Limitations
 
-<a name="localization"></a>
+<a id="localization"></a>
 ## Localization
 
 In general the service is not localized and all WHOIS information is provided in English.
 
-<a name="media-type--format"></a>
+<a id="media-type--format"></a>
 ## Media-type / Format
 
 The service only supports **JSON**.
 
-<a name="encoding"></a>
+<a id="encoding"></a>
 ## Encoding
 
 The service supports the following encodings:
@@ -114,7 +116,7 @@ The service supports the following encodings:
 - ASCII
 - URI encoding [RFC:3986][RFC:3986]
 
-<a name="rate-limiting"></a>
+<a id="rate-limiting"></a>
 ## Rate Limiting
 
 We only allow a certain number of requests per minute. We reserve the right to adjust the rate limit in order to provide a high quality of service.
@@ -125,12 +127,12 @@ In addition the service only allow 1 TCP-connection per. (IPv4)/24.
 
 Meaning that `192.0.2.41` and `192.0.2.52` can not have simultanous connections, but `192.0.2.41` and `192.0.3.52` can.
 
-<a name="security"></a>
+<a id="security"></a>
 ## Security
 
 The service is only available under **TLS 1.2**
 
-<a name="service"></a>
+<a id="service"></a>
 # Service
 
 The service is available at:
@@ -205,12 +207,12 @@ Vary: Origin
 }
 ```
 
-<a name="domain"></a>
+<a id="domain"></a>
 ## domain
 
 This service returns data on a given domain name.
 
-<a name="api"></a>
+<a id="api"></a>
 ### API
 
     https://whois-api.dk-hostmaster.dk/domain/{domainname}
@@ -224,7 +226,7 @@ The service returns `200` if it can find a relevant object together with the pub
 | `404` | Object not found |
 | `415` | Unsupported media type |
 
-<a name="example"></a>
+<a id="example"></a>
 ### Example
 
 Using `httpie`
@@ -308,17 +310,17 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/do
 }
 ```
 
-<a name="domain-list"></a>
+<a id="domain-list"></a>
 ## domain list
 
-<a name="api-1"></a>
+<a id="api-1"></a>
 ### API
 
     https://whois-api.dk-hostmaster.dk/domain/list/userid/{handle}/{role}
 
 The service returns `200` if it can find a relevant object holding the relevant role.
 
-<a name="example-1"></a>
+<a id="example-1"></a>
 ### Example
 
 Using `httpie`
@@ -373,12 +375,12 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/do
 | `404` | Object not found |
 | `415` | Unsupported media type |
 
-<a name="handle"></a>
+<a id="handle"></a>
 ## handle
 
 This service returns data on a given handle/user-id.
 
-<a name="api-2"></a>
+<a id="api-2"></a>
 ### API
 
     https://whois-api.dk-hostmaster.dk/handle/{userid}
@@ -390,7 +392,7 @@ This service returns data on a given handle/user-id.
 | `404` | Object not found |
 | `415` | Unsupported media type |
 
-<a name="eksempel"></a>
+<a id="eksempel"></a>
 ### Eksempel
 
 Using `httpie`
@@ -427,12 +429,12 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/ha
 }
 ```
 
-<a name="host"></a>
+<a id="host"></a>
 ## host
 
 This service returns data on a given hostname/nameserver.
 
-<a name="api-3"></a>
+<a id="api-3"></a>
 ### API
 
     https://whois-api.dk-hostmaster.dk/host/{hostname}
@@ -444,7 +446,7 @@ This service returns data on a given hostname/nameserver.
 | `404` | Object not found |
 | `415` | Unsupported media type |
 
-<a name="example-2"></a>
+<a id="example-2"></a>
 ### Example
 
 Using `httpie`
@@ -471,12 +473,12 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/ho
 }
 ```
 
-<a name="query"></a>
+<a id="query"></a>
 ## query
 
 This service acts as a central entry points it relays to the above services:
 
-<a name="api-4"></a>
+<a id="api-4"></a>
 ### API
 
     https://whois-api.dk-hostmaster.dk/#query
@@ -488,7 +490,7 @@ This service acts as a central entry points it relays to the above services:
 | `404` | Object not found |
 | `415` | Unsupported media type |
 
-<a name="domain-example"></a>
+<a id="domain-example"></a>
 ### Domain Example
 
 Using `httpie`
@@ -572,7 +574,7 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/qu
 }
 ```
 
-<a name="host-example"></a>
+<a id="host-example"></a>
 ### Host Example
 
 Using `httpie`
@@ -599,7 +601,7 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/qu
 }
 ```
 
-<a name="handle-example"></a>
+<a id="handle-example"></a>
 ### Handle Example
 
 Using `httpie`
@@ -636,36 +638,36 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/qu
 }
 ```
 
-<a name="resources"></a>
+<a id="resources"></a>
 # Resources
 
 Resources for DK Hostmaster WHOIS support can be found below.
 
-<a name="mailing-list"></a>
+<a id="mailing-list"></a>
 ## Mailing list
 
 DK Hostmaster operates a mailing list for discussion and inquiries  about the DK Hostmaster RESTful WHOIS service. To subscribe to this list, write to the address below and follow the instructions. Please note that the list is for technical discussion only, any issues beyond the technical scope will not be responded to, please send these to the contact issue reporting address below and they will be passed on to the appropriate entities within DK Hostmaster A/S.
 
-* `tech-discuss+subscribe@liste.dk-hostmaster.dk`
+- `tech-discuss+subscribe@liste.dk-hostmaster.dk`
 
-<a name="issue-reporting"></a>
+<a id="issue-reporting"></a>
 ## Issue Reporting
 
 For issue reporting related to this specification, the WHOIS implementation or the production environment, please contact us.  You are of course welcome to post these to the mailing list mentioned above, otherwise use the address specified below:
 
- * `info@dk-hostmaster.dk`
+- `info@dk-hostmaster.dk`
 
-<a name="additional-information"></a>
+<a id="additional-information"></a>
 ## Additional Information
 
 The DK Hostmaster website service page
 
-  * `https://www.dk-hostmaster.dk/en/whois`
+- `https://www.dk-hostmaster.dk/en/whois`
 
-<a name="appendices"></a>
+<a id="appendices"></a>
 # Appendices
 
-<a name="http-status-codes"></a>
+<a id="http-status-codes"></a>
 ## HTTP Status Codes
 
 The services hold their own table of return codes, this is just a curated list to collect all possible return codes, please refer to the specific services also.
@@ -681,4 +683,3 @@ The services hold their own table of return codes, this is just a curated list t
 [RFC:3492]: https://tools.ietf.org/html/rfc3492
 [RFC:3912]: https://tools.ietf.org/html/rfc3912
 [RFC:3986]: https://tools.ietf.org/html/rfc3986
-
