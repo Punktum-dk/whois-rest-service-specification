@@ -2,14 +2,14 @@
 
 # DK Hostmaster RESTful WHOIS Service Specification
 
-2017/05/01
-Revision: 1.1
+2019-04-15
+Revision: 2.0
 
 **PLEASE NOTE THAT THIS SERVICE IS CURRENTLY IN BETA AND CHANGES MIGHT BE IMPLEMENTED WHICH BREAK BACKWARDS COMPATIBILITY**
 
 # Table of Contents
 
-<!-- MarkdownTOC bracket=round levels="1,2,3, 4" indent="  " -->
+<!-- MarkdownTOC bracket=round levels="1,2,3, 4" indent="  " autolink="true" -->
 
 - [Introduction](#introduction)
 - [About this Document](#about-this-document)
@@ -60,7 +60,7 @@ The WHOIS RESTful service is optimized for structured querying in contrast to it
 <a id="about-this-document"></a>
 # About this Document
 
-This specification describes version 1 (1.0.x) of the DK Hostmaster WHOIS RESTful service implementation. Future releases will be reflected in updates to this specification, please see the document history section below.
+This specification describes version 2 (2.X.X) of the DK Hostmaster WHOIS RESTful service implementation. Future releases will be reflected in updates to this specification, please see the document history section below.
 The document describes the current DK Hostmaster WHOIS RESTful service implementation, for more general documentation on the used protocols and additional information please refer to the RFCs and additional resources in the References and Resources chapters below.
 Any future extensions and possible additions and changes to the implementation are not within the scope of this document and will not be discussed or mentioned throughout this document.
 
@@ -73,6 +73,11 @@ This document is copyright by DK Hostmaster A/S and is licensed under the MIT Li
 
 <a id="document-history"></a>
 ## Document History
+
+- 2.0 2019-04-15
+  - Major update based on the changes with major release 2.0.0 of the WHOIS RESTful service
+  - Documenting removal of public information on non-registrant users for handle (users) and domain name inquiries
+  - Documenting removal of name server contacts for host (name server) inquiries
 
 - 1.0 2016-11-08
   - Initial revision
@@ -165,8 +170,8 @@ $ curl https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK
 Correct specification using `curl` should be as follows:
 
 ```bash
-> curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK
-{"attention":null,"city":"København V","countryregionid":"DK","message":"OK","mobilephone":null,"name":"DK HOSTMASTER A\/S","phone":null,"query_userid":"DKHM1-DK","status":200,"street1":"Kalvebod Brygge 45, 3.","street2":null,"street3":null,"telefax":null,"userid":"DKHM1-DK","useridtype":"V","validregistrant":"1","zipcode":"1560"}
+$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/handle/DKHM1-DK
+{"attention":null,"city":"København S","countryregionid":"DK","message":"OK","mobilephone":null,"name":"DK HOSTMASTER A\/S","phone":null,"query_userid":"DKHM1-DK","status":200,"street1":"Ørestads Boulevard 108, 11.","street2":null,"street3":null,"telefax":null,"userid":"DKHM1-DK","useridtype":"V","validregistrant":"1","zipcode":"2300"}
 ```
 
 And for `httpie`
@@ -179,7 +184,7 @@ Cache-Control: max-age=1, no-cache
 Connection: keep-alive
 Content-Encoding: gzip
 Content-Type: application/json;charset=UTF-8
-Date: Tue, 08 Nov 2016 10:19:18 GMT
+Date: Mon, 22 Apr 2019 11:25:24 GMT
 Server: nginx
 Strict-Transport-Security: max-age=15768000
 Transfer-Encoding: chunked
@@ -188,7 +193,7 @@ Vary: Origin
 
 {
     "attention": null,
-    "city": "København V",
+    "city": "København S",
     "countryregionid": "DK",
     "message": "OK",
     "mobilephone": null,
@@ -196,14 +201,14 @@ Vary: Origin
     "phone": null,
     "query_userid": "DKHM1-DK",
     "status": 200,
-    "street1": "Kalvebod Brygge 45, 3.",
+    "street1": "Ørestads Boulevard 108, 11.",
     "street2": null,
     "street3": null,
     "telefax": null,
     "userid": "DKHM1-DK",
     "useridtype": "V",
     "validregistrant": "1",
-    "zipcode": "1560"
+    "zipcode": "2300"
 }
 ```
 
@@ -215,7 +220,7 @@ This service returns data on a given domain name.
 <a id="api"></a>
 ### API
 
-    https://whois-api.dk-hostmaster.dk/domain/{domainname}
+`https://whois-api.dk-hostmaster.dk/domain/{domainname}`
 
 The service returns `200` if it can find a relevant object together with the public data.
 
@@ -243,70 +248,49 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/do
 
 ```json
 {
-    "admin": {
-        "attention": null,
-        "city": "København V",
-        "countryregionid": "DK",
-        "mobilephone": null,
-        "name": "DK HOSTMASTER A/S",
-        "phone": null,
-        "query_userid": "DKHM1-DK",
-        "street1": "Kalvebod Brygge 45, 3.",
-        "street2": null,
-        "street3": null,
-        "telefax": null,
-        "userid": "DKHM1-DK",
-        "useridtype": "V",
-        "validregistrant": "1",
-        "zipcode": "1560"
+  "createddate": "1999/05/17",
+  "dnssec": "J",
+  "domain": "eksempel.dk",
+  "domain_encoded": "eksempel.dk",
+  "domain_type": "V",
+  "message": "OK",
+  "nameservers": {
+    "auth01.ns.dk-hostmaster.dk": {
+      "domain": "eksempel.dk",
+      "domain_encoded": "eksempel.dk",
+      "hostname": "auth01.ns.dk-hostmaster.dk",
+      "hostname_encoded": "auth01.ns.dk-hostmaster.dk"
     },
-    "admin_userid": "DKHM1-DK",
-    "createddate": "1999/05/17",
-    "dnssec": "J",
-    "domain": "eksempel.dk",
-    "domain_encoded": "eksempel.dk",
-    "domain_type": "V",
-    "message": "OK",
-    "nameservers": {
-        "auth01.ns.dk-hostmaster.dk": {
-            "domain": "eksempel.dk",
-            "domain_encoded": "eksempel.dk",
-            "hostname": "auth01.ns.dk-hostmaster.dk",
-            "hostname_encoded": "auth01.ns.dk-hostmaster.dk",
-            "zonecontact_userid": "DKHM1-DK"
-        },
-        "auth02.ns.dk-hostmaster.dk": {
-            "domain": "eksempel.dk",
-            "domain_encoded": "eksempel.dk",
-            "hostname": "auth02.ns.dk-hostmaster.dk",
-            "hostname_encoded": "auth02.ns.dk-hostmaster.dk",
-            "zonecontact_userid": "DKHM1-DK"
-        }
-    },
-    "paiduntildate": "2017/06/30",
-    "periodqty": "5",
-    "proxy_userid": "DKHM1-DK",
-    "public_deletedate": null,
-    "public_domain_status": "A",
-    "registrant": {
-        "attention": null,
-        "city": "København V",
-        "countryregionid": "DK",
-        "mobilephone": null,
-        "name": "DK HOSTMASTER A/S",
-        "phone": null,
-        "query_userid": "DKHM1-DK",
-        "street1": "Kalvebod Brygge 45, 3.",
-        "street2": null,
-        "street3": null,
-        "telefax": null,
-        "userid": "DKHM1-DK",
-        "useridtype": "V",
-        "validregistrant": "1",
-        "zipcode": "1560"
-    },
-    "registrant_userid": "DKHM1-DK",
-    "status": 200
+    "auth02.ns.dk-hostmaster.dk": {
+      "domain": "eksempel.dk",
+      "domain_encoded": "eksempel.dk",
+      "hostname": "auth02.ns.dk-hostmaster.dk",
+      "hostname_encoded": "auth02.ns.dk-hostmaster.dk"
+    }
+  },
+  "paiduntildate": "2022/06/30",
+  "periodqty": "5",
+  "public_deletedate": null,
+  "public_domain_status": "A",
+  "registrant": {
+    "attention": null,
+    "city": "København S",
+    "countryregionid": "DK",
+    "mobilephone": null,
+    "name": "DK HOSTMASTER A/S",
+    "phone": null,
+    "query_userid": "DKHM1-DK",
+    "street1": "Ørestads Boulevard 108, 11.",
+    "street2": null,
+    "street3": null,
+    "telefax": null,
+    "userid": "DKHM1-DK",
+    "useridtype": "V",
+    "validregistrant": "1",
+    "zipcode": "2300"
+  },
+  "registrant_userid": "DKHM1-DK",
+  "status": 200
 }
 ```
 
@@ -316,9 +300,9 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/do
 <a id="api-1"></a>
 ### API
 
-    https://whois-api.dk-hostmaster.dk/domain/list/handle/{userid}/role/{role}
+`https://whois-api.dk-hostmaster.dk/domain/list/handle/{userid}/role/{role}`
 
-The service returns `200` if it can find a relevant object holding the relevant role. Supported role types values are: _registrant_ and _proxy_ only.
+The service returns `200` if it can find a relevant object holding the relevant role. Supported role types values is: _registrant_ only.
 
 <a id="example-1"></a>
 ### Example
@@ -326,45 +310,45 @@ The service returns `200` if it can find a relevant object holding the relevant 
 Using `httpie`
 
 ```bash
-$ http https://whois-api.dk-hostmaster.dk/domain/list/handle/DKHM1-DK/role/proxy Accept:'application/json'
+$ http https://whois-api.dk-hostmaster.dk/domain/list/handle/DKHM1-DK/role/registrant Accept:'application/json'
 ```
 
 Using `curl` and `jq`
 
 ```bash
-$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/domain/list/handle/DKHM1-DK/role/proxy | jq
+$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/domain/list/handle/DKHM1-DK/role/registrant | jq
 ```
 
 ```json
 {
-    "attention": null,
-    "city": "København V",
-    "countryregionid": "DK",
-    "domains": [
-        {
-            "domain": "eksempel.dk",
-            "domain_encoded": "eksempel.dk"
-        },
-        {
-            "domain": "æøåöäüé.dk",
-            "domain_encoded": "xn--4cabco7dk5a.dk"
-        }
-    ],
-    "message": "OK",
-    "mobilephone": null,
-    "name": "DK HOSTMASTER A/S",
-    "phone": null,
-    "query_userid": "DKHM1-DK",
-    "role": "proxy",
-    "status": 200,
-    "street1": "Kalvebod Brygge 45, 3.",
-    "street2": null,
-    "street3": null,
-    "telefax": null,
-    "userid": "DKHM1-DK",
-    "useridtype": "V",
-    "validregistrant": "1",
-    "zipcode": "1560"
+  "attention": null,
+  "city": "København S",
+  "countryregionid": "DK",
+  "domains": [
+    {
+      "domain": "dk-hostmaster.dk",
+      "domain_encoded": "dk-hostmaster.dk"
+    },
+    {
+      "domain": "æøåöäüé.dk",
+      "domain_encoded": "xn--4cabco7dk5a.dk"
+    }
+  ],
+  "message": "OK",
+  "mobilephone": null,
+  "name": "DK HOSTMASTER A/S",
+  "phone": null,
+  "query_userid": "DKHM1-DK",
+  "role": "registrant",
+  "status": 200,
+  "street1": "Ørestads Boulevard 108, 11.",
+  "street2": null,
+  "street3": null,
+  "telefax": null,
+  "userid": "DKHM1-DK",
+  "useridtype": "V",
+  "validregistrant": "1",
+  "zipcode": "2300"
 }
 ```
 
@@ -383,7 +367,7 @@ This service returns data on a given handle/user-id.
 <a id="api-2"></a>
 ### API
 
-    https://whois-api.dk-hostmaster.dk/handle/{userid}
+`https://whois-api.dk-hostmaster.dk/handle/{userid}`
 
 | Return Code  | Description |
 | ------------ | ------------ |
@@ -409,23 +393,23 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/ha
 
 ```json
 {
-    "attention": null,
-    "city": "København V",
-    "countryregionid": "DK",
-    "message": "OK",
-    "mobilephone": null,
-    "name": "DK HOSTMASTER A/S",
-    "phone": null,
-    "query_userid": "DKHM1-DK",
-    "status": 200,
-    "street1": "Kalvebod Brygge 45, 3.",
-    "street2": null,
-    "street3": null,
-    "telefax": null,
-    "userid": "DKHM1-DK",
-    "useridtype": "V",
-    "validregistrant": "1",
-    "zipcode": "1560"
+  "attention": null,
+  "city": "København S",
+  "countryregionid": "DK",
+  "message": "OK",
+  "mobilephone": null,
+  "name": "DK HOSTMASTER A/S",
+  "phone": null,
+  "query_userid": "DKHM1-DK",
+  "status": 200,
+  "street1": "Ørestads Boulevard 108, 11.",
+  "street2": null,
+  "street3": null,
+  "telefax": null,
+  "userid": "DKHM1-DK",
+  "useridtype": "V",
+  "validregistrant": "1",
+  "zipcode": "2300"
 }
 ```
 
@@ -437,7 +421,7 @@ This service returns data on a given hostname/name server.
 <a id="api-3"></a>
 ### API
 
-    https://whois-api.dk-hostmaster.dk/host/{hostname}
+`https://whois-api.dk-hostmaster.dk/host/{hostname}`
 
 | Return Code  | Description |
 | ------------ | ------------ |
@@ -463,13 +447,12 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/ho
 
 ```json
 {
-    "glue_spooled": "J",
-    "hostname": "auth01.ns.dk-hostmaster.dk",
-    "hostname_encoded": "auth01.ns.dk-hostmaster.dk",
-    "message": "OK",
-    "nameserver_status": "A",
-    "status": 200,
-    "zonecontact_userid": "DKHM1-DK"
+  "glue_spooled": "J",
+  "hostname": "auth01.ns.dk-hostmaster.dk",
+  "hostname_encoded": "auth01.ns.dk-hostmaster.dk",
+  "message": "OK",
+  "nameserver_status": "A",
+  "status": 200
 }
 ```
 
@@ -481,7 +464,7 @@ This service acts as a central entry points it relays to the above services:
 <a id="api-4"></a>
 ### API
 
-    https://whois-api.dk-hostmaster.dk/#query
+`https://whois-api.dk-hostmaster.dk/#query`
 
 | Return Code  | Description |
 | ------------ | ------------ |
@@ -507,70 +490,49 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/qu
 
 ```json
 {
-    "admin": {
-        "attention": null,
-        "city": "København V",
-        "countryregionid": "DK",
-        "mobilephone": null,
-        "name": "DK HOSTMASTER A/S",
-        "phone": null,
-        "query_userid": "DKHM1-DK",
-        "street1": "Kalvebod Brygge 45, 3.",
-        "street2": null,
-        "street3": null,
-        "telefax": null,
-        "userid": "DKHM1-DK",
-        "useridtype": "V",
-        "validregistrant": "1",
-        "zipcode": "1560"
+  "createddate": "1999/05/17",
+  "dnssec": "J",
+  "domain": "eksempel.dk",
+  "domain_encoded": "eksempel.dk",
+  "domain_type": "V",
+  "message": "OK",
+  "nameservers": {
+    "auth01.ns.dk-hostmaster.dk": {
+      "domain": "eksempel.dk",
+      "domain_encoded": "eksempel.dk",
+      "hostname": "auth01.ns.dk-hostmaster.dk",
+      "hostname_encoded": "auth01.ns.dk-hostmaster.dk"
     },
-    "admin_userid": "DKHM1-DK",
-    "createddate": "1999/05/17",
-    "dnssec": "J",
-    "domain": "eksempel.dk",
-    "domain_encoded": "eksempel.dk",
-    "domain_type": "V",
-    "message": "OK",
-    "nameservers": {
-        "auth01.ns.dk-hostmaster.dk": {
-            "domain": "eksempel.dk",
-            "domain_encoded": "eksempel.dk",
-            "hostname": "auth01.ns.dk-hostmaster.dk",
-            "hostname_encoded": "auth01.ns.dk-hostmaster.dk",
-            "zonecontact_userid": "DKHM1-DK"
-        },
-        "auth02.ns.dk-hostmaster.dk": {
-            "domain": "eksempel.dk",
-            "domain_encoded": "eksempel.dk",
-            "hostname": "auth02.ns.dk-hostmaster.dk",
-            "hostname_encoded": "auth02.ns.dk-hostmaster.dk",
-            "zonecontact_userid": "DKHM1-DK"
-        }
-    },
-    "paiduntildate": "2017/06/30",
-    "periodqty": "5",
-    "proxy_userid": "DKHM1-DK",
-    "public_deletedate": null,
-    "public_domain_status": "A",
-    "registrant": {
-        "attention": null,
-        "city": "København V",
-        "countryregionid": "DK",
-        "mobilephone": null,
-        "name": "DK HOSTMASTER A/S",
-        "phone": null,
-        "query_userid": "DKHM1-DK",
-        "street1": "Kalvebod Brygge 45, 3.",
-        "street2": null,
-        "street3": null,
-        "telefax": null,
-        "userid": "DKHM1-DK",
-        "useridtype": "V",
-        "validregistrant": "1",
-        "zipcode": "1560"
-    },
-    "registrant_userid": "DKHM1-DK",
-    "status": 200
+    "auth02.ns.dk-hostmaster.dk": {
+      "domain": "eksempel.dk",
+      "domain_encoded": "eksempel.dk",
+      "hostname": "auth02.ns.dk-hostmaster.dk",
+      "hostname_encoded": "auth02.ns.dk-hostmaster.dk"
+    }
+  },
+  "paiduntildate": "2022/06/30",
+  "periodqty": "5",
+  "public_deletedate": null,
+  "public_domain_status": "A",
+  "registrant": {
+    "attention": null,
+    "city": "København S",
+    "countryregionid": "DK",
+    "mobilephone": null,
+    "name": "DK HOSTMASTER A/S",
+    "phone": null,
+    "query_userid": "DKHM1-DK",
+    "street1": "Ørestads Boulevard 108, 11.",
+    "street2": null,
+    "street3": null,
+    "telefax": null,
+    "userid": "DKHM1-DK",
+    "useridtype": "V",
+    "validregistrant": "1",
+    "zipcode": "2300"
+  },
+  "registrant_userid": "DKHM1-DK",
+  "status": 200
 }
 ```
 
@@ -591,13 +553,12 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/qu
 
 ```json
 {
-    "glue_spooled": "J",
-    "hostname": "auth01.ns.dk-hostmaster.dk",
-    "hostname_encoded": "auth01.ns.dk-hostmaster.dk",
-    "message": "OK",
-    "nameserver_status": "A",
-    "status": 200,
-    "zonecontact_userid": "DKHM1-DK"
+  "glue_spooled": "J",
+  "hostname": "auth01.ns.dk-hostmaster.dk",
+  "hostname_encoded": "auth01.ns.dk-hostmaster.dk",
+  "message": "OK",
+  "nameserver_status": "A",
+  "status": 200
 }
 ```
 
@@ -618,23 +579,23 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/qu
 
 ```json
 {
-    "attention": null,
-    "city": "København V",
-    "countryregionid": "DK",
-    "message": "OK",
-    "mobilephone": null,
-    "name": "DK HOSTMASTER A/S",
-    "phone": null,
-    "query_userid": "DKHM1-DK",
-    "status": 200,
-    "street1": "Kalvebod Brygge 45, 3.",
-    "street2": null,
-    "street3": null,
-    "telefax": null,
-    "userid": "DKHM1-DK",
-    "useridtype": "V",
-    "validregistrant": "1",
-    "zipcode": "1560"
+  "attention": null,
+  "city": "København S",
+  "countryregionid": "DK",
+  "message": "OK",
+  "mobilephone": null,
+  "name": "DK HOSTMASTER A/S",
+  "phone": null,
+  "query_userid": "DKHM1-DK",
+  "status": 200,
+  "street1": "Ørestads Boulevard 108, 11.",
+  "street2": null,
+  "street3": null,
+  "telefax": null,
+  "userid": "DKHM1-DK",
+  "useridtype": "V",
+  "validregistrant": "1",
+  "zipcode": "2300"
 }
 ```
 
