@@ -217,6 +217,8 @@ Vary: Origin
 
 This service returns data on a given domain name.
 
+As of version 2.X.X of the service, admin/proxy information is no longer part of the response data, same goes for name server administrators/zone contact handles.
+
 <a id="api"></a>
 ### API
 
@@ -302,7 +304,9 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/do
 
 `https://whois-api.dk-hostmaster.dk/domain/list/handle/{userid}/role/{role}`
 
-The service returns `200` if it can find a relevant object holding the relevant role. Supported role types values is: _registrant_ only.
+The service returns `200` if it can find a relevant object holding the relevant role. Supported role types values is: `registrant` only.
+
+As of version 2.X.X of the service, admin/proxy information is no longer supported.
 
 <a id="example-1"></a>
 ### Example
@@ -362,7 +366,9 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/do
 <a id="handle"></a>
 ## handle
 
-This service returns data on a given handle/user-id.
+This service returns data on a given handle/user-id. The service only returns data on active users with the `registrant` role.
+
+As of version 2.X.X of the service, admin/proxy and name server administrator/zone contact information is no longer available via this service.
 
 <a id="api-2"></a>
 ### API
@@ -417,6 +423,8 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/ha
 ## host
 
 This service returns data on a given hostname/name server.
+
+As of version 2.X.X of the service, name server administrators/zone contact handle information is no longer part of the response data.
 
 <a id="api-3"></a>
 ### API
