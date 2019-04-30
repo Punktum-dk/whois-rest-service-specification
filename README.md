@@ -2,7 +2,7 @@
 
 # DK Hostmaster RESTful WHOIS Service Specification
 
-2019-04-15
+2019-04-30
 Revision: 2.0
 
 **PLEASE NOTE THAT THIS SERVICE IS CURRENTLY IN BETA AND CHANGES MIGHT BE IMPLEMENTED WHICH BREAK BACKWARDS COMPATIBILITY**
@@ -74,7 +74,7 @@ This document is copyright by DK Hostmaster A/S and is licensed under the MIT Li
 <a id="document-history"></a>
 ## Document History
 
-- 2.0 2019-04-15
+- 2.0 2019-04-30
   - Major update based on the changes with major release 2.0.0 of the WHOIS RESTful service
   - Documenting removal of public information on non-registrant users for handle (users) and domain name inquiries
   - Documenting removal of name server contacts for host (name server) inquiries
