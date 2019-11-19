@@ -4,8 +4,8 @@
 
 ![GitHub Workflow build status badge markdownlint](https://github.com/DK-Hostmaster/whois-rest-service-specification/workflows/Markdownlint%20Workflow/badge.svg)
 
-2019-04-30
-Revision: 2.0
+2019-11-19
+Revision: 2.1
 
 **PLEASE NOTE THAT THIS SERVICE IS CURRENTLY IN BETA AND CHANGES MIGHT BE IMPLEMENTED WHICH BREAK BACKWARDS COMPATIBILITY**
 
@@ -76,6 +76,9 @@ This document is copyright by DK Hostmaster A/S and is licensed under the MIT Li
 <a id="document-history"></a>
 ## Document History
 
+- 2.1 2019-11-19
+  - Updated section on rate limiting based on changes to production environment
+
 - 2.0 2019-04-30
   - Major update based on the changes with major release 2.0.0 of the WHOIS RESTful service
   - Documenting removal of public information on non-registrant users for handle (users) and domain name inquiries
@@ -126,13 +129,11 @@ The service supports the following encodings:
 <a id="rate-limiting"></a>
 ## Rate Limiting
 
-We only allow a certain number of requests per minute. We reserve the right to adjust the rate limit in order to provide a high quality of service.
+We only allow one request per second per source IP.
 
-Current limit is set to 1 request per second.
+If rate is higher that acceptable, we return: `503 Service Temporarily Unavailable`
 
-In addition the service only allow 1 TCP-connection per. (IPv4)/24.
-
-Meaning that `192.0.2.41` and `192.0.2.52` can not have simultaneous connections, but `192.0.2.41` and `192.0.3.52` can.
+We reserve the right to adjust the rate limiting in order to provide a high quality of service.
 
 <a id="security"></a>
 ## Security
