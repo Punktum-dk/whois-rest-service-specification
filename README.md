@@ -84,6 +84,9 @@ This document is copyright by DK Hostmaster A/S and is licensed under the MIT Li
   - Documenting removal of public information on non-registrant users for handle (users) and domain name inquiries
   - Documenting removal of name server contacts for host (name server) inquiries
 
+- 1.1 2017-05-01
+  - Correction of typos and minor cleanups, thanks to the contributors for the PRs
+
 - 1.0 2016-11-08
   - Initial revision
 
