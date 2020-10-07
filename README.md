@@ -2,7 +2,8 @@
 
 # DK Hostmaster RESTful WHOIS Service Specification
 
-![GitHub Workflow build status badge markdownlint](https://github.com/DK-Hostmaster/whois-rest-service-specification/workflows/Markdownlint%20Workflow/badge.svg)
+![Markdownlint Action](https://github.com/DK-Hostmaster/whois-rest-service-specification/workflows/Markdownlint%20Action/badge.svg)
+![Spellcheck Action](https://github.com/DK-Hostmaster/whois-rest-service-specification/workflows/Spellcheck%20Action/badge.svg)
 
 2019-11-25
 Revision: 3.0
