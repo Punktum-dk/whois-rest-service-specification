@@ -50,3 +50,8 @@ whois
 WHOIS
 www
 zipcode
+deprecations
+url
+DDTHH
+SSTZ
+YYYY
