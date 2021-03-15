@@ -5,8 +5,8 @@
 ![Markdownlint Action](https://github.com/DK-Hostmaster/whois-rest-service-specification/workflows/Markdownlint%20Action/badge.svg)
 ![Spellcheck Action](https://github.com/DK-Hostmaster/whois-rest-service-specification/workflows/Spellcheck%20Action/badge.svg)
 
-2019-11-25
-Revision: 3.0
+2021-03-15
+Revision: 3.1
 
 **PLEASE NOTE THAT THIS SERVICE IS CURRENTLY IN BETA AND CHANGES MIGHT BE IMPLEMENTED WHICH BREAK BACKWARDS COMPATIBILITY**
 
@@ -46,6 +46,7 @@ Revision: 3.0
   - [Additional Information](#additional-information)
 - [Appendices](#appendices)
   - [HTTP Status Codes](#http-status-codes)
+  - [Public Status Values](#public-domain-status-values)
 
 <!-- /MarkdownTOC -->
 
@@ -72,6 +73,9 @@ This document is copyright by DK Hostmaster A/S and is licensed under the MIT Li
 
 <a id="document-history"></a>
 ## Document History
+
+- 3.1 2021-03-15
+  - Added appendix on status values and clarified the explanation on status
 
 - 3.0 2019-11-25
   - Support for queries using user handles are no longer supported and the API endpoint `https://whois-api.dk-hostmaster.dk/handle/{userid}` has been removed
@@ -513,6 +517,16 @@ The services hold their own table of return codes, this is just a curated list t
 | `404` | Object not found |
 | `415` | Unsupported media type |
 | `500` | Internal server error |
+
+<a id="public-domain-status-values"></a>
+## Public Domain Status Values
+
+| Status | Description                                                                                        |
+| ------ | -------------------------------------------------------------------------------------------------- |
+| `A`    | Domain name is or being published to the zone                                                      |
+| `B`    | Domain name is blocked and not being published to the zone (special status)                        |
+| `H`    | Domain name is being withheld from being published to the zone (general status)                    |
+| `I`    | Domain name is inactive and is not being published to the zone (activation required by registrant) |
 
 [RFC:3492]: https://tools.ietf.org/html/rfc3492
 [RFC:3912]: https://tools.ietf.org/html/rfc3912
