@@ -5,14 +5,14 @@
 ![Markdownlint Action](https://github.com/DK-Hostmaster/whois-rest-service-specification/workflows/Markdownlint%20Action/badge.svg)
 ![Spellcheck Action](https://github.com/DK-Hostmaster/whois-rest-service-specification/workflows/Spellcheck%20Action/badge.svg)
 
-2021-03-15
-Revision: 3.1
+2021-08-26
+Revision: 4.0
 
 **PLEASE NOTE THAT THIS SERVICE IS CURRENTLY IN BETA AND CHANGES MIGHT BE IMPLEMENTED WHICH BREAK BACKWARDS COMPATIBILITY**
 
 # Table of Contents
 
-<!-- MarkdownTOC bracket=round levels="1,2,3, 4" indent="  " autolink="true"  autoanchor="true" -->
+<!-- MarkdownTOC bracket=round levels="1,2,3,4" indent="  " autolink="true"  autoanchor="true" -->
 
 - [Introduction](#introduction)
 - [About this Document](#about-this-document)
@@ -73,6 +73,10 @@ This document is copyright by DK Hostmaster A/S and is licensed under the MIT Li
 
 <a id="document-history"></a>
 ## Document History
+
+- 4.0 2021-08-26
+  - Added documentation on data retrieval for domain names offered from a waiting list
+    introduced with service version 4.0.0
 
 - 3.1 2021-03-15
   - Added appendix on status values and clarified the explanation on status
@@ -254,6 +258,8 @@ As of version 2.X.X of the service, admin/proxy information is no longer part of
 
 As of version 3.X.X of the service, registrant user-id/handle information is no longer part of the response data.
 
+As of version 4.X.X of the service, information on a domain name offered from a waiting list is available.
+
 <a id="api"></a>
 ### API
 
@@ -327,6 +333,19 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/do
   "status": 200
 }
 ```
+
+If the queried domain name is offered from a waiting list, the response will look as follows:
+
+```json
+{
+    "domain": "eksempel.dk",
+    "domain_encoded": "eksempel.dk",
+    "message": "OK",
+    "public_domain_status": "W",
+    "status": 200
+}
+
+Do note the special status: `W`.
 
 <a id="host"></a>
 ## host
@@ -527,6 +546,7 @@ The services hold their own table of return codes, this is just a curated list t
 | `B`    | Domain name is blocked and not being published to the zone (special status)                        |
 | `H`    | Domain name is being withheld from being published to the zone (general status)                    |
 | `I`    | Domain name is inactive and is not being published to the zone (activation required by registrant) |
+| `W`    | Domain name is offered from a waiting list to (acceptance is required by designated registrant) |
 
 [RFC:3492]: https://tools.ietf.org/html/rfc3492
 [RFC:3912]: https://tools.ietf.org/html/rfc3912
