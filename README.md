@@ -57,14 +57,16 @@ This document describes and specifies the a RESTful alternative to the WHOIS imp
 
 The WHOIS RESTful service is optimized for structured querying in contrast to it's text-based origin implementing the [WHOIS service](https://github.com/DK-Hostmaster/whois-service-specification) responding on port 43,
 
+With the introduction of the registrar model, the WHOIS capabilities are being extended so these can serve information on registrars.
+
+The registrar model, [description here conceptually][concept], gives registrars the option to manage a customer’s .dk domain name if the customer would prefer this. This is referred to as "registrar management". The alternative allowing the customer to manage their domain name themselves is referred to as "registrant management".
+
 <a id="about-this-document"></a>
 # About this Document
 
-This specification describes version 3 (3.X.X) of the DK Hostmaster WHOIS RESTful service implementation. Future releases will be reflected in updates to this specification, please see the document history section below.
+This specification describes version 4 (4.X.X) of the DK Hostmaster WHOIS RESTful service implementation. Future releases will be reflected in updates to this specification, please see the document history section below.
 The document describes the current DK Hostmaster WHOIS RESTful service implementation, for more general documentation on the used protocols and additional information please refer to the RFCs and additional resources in the References and Resources chapters below.
 Any future extensions and possible additions and changes to the implementation are not within the scope of this document and will not be discussed or mentioned throughout this document.
-
-Printable version can be obtained via [this link](https://gitprint.com/DK-Hostmaster/whois-rest-service-specification/blob/master/README.md), using the gitprint service.
 
 <a id="license"></a>
 ## License
@@ -77,6 +79,9 @@ This document is copyright by DK Hostmaster A/S and is licensed under the MIT Li
 - 4.0 2021-08-26
   - Added documentation on data retrieval for domain names offered from a waiting list
     introduced with service version 4.0.0
+  - Date fields in responses have changed format from: `YYYY/MM/DD` to `YYYY-MM-DDTHH:MM:SSTZ` adhering to [ISO:8691]
+  - Responses to domain name queries have been extended with registrar information
+  - Above extensions was introduced with version 4.0.0 of the DK Hostmaster WHOIS RESTful service
 
 - 3.1 2021-03-15
   - Added appendix on status values and clarified the explanation on status
@@ -85,6 +90,7 @@ This document is copyright by DK Hostmaster A/S and is licensed under the MIT Li
   - Support for queries using user handles are no longer supported and the API endpoint `https://whois-api.dk-hostmaster.dk/handle/{userid}` has been removed
   - Support for queries using roles are not longer supported and the API endpoint `https://whois-api.dk-hostmaster.dk/domain/list/handle/{userid}/role/{role}` has been removed
   - Support for user handles in domain query result sets have been removed (`registrant_userid`, `query_userid` and `userid`), for API endpoints: `https://whois-api.dk-hostmaster.dk/domain/{domainname}` and `https://whois-api.dk-hostmaster.dk/#query`
+  - Above deprecations was introduced with version 3.0.0 of the DK Hostmaster WHOIS RESTful service
 
 - 2.1 2019-11-19
   - Updated section on rate limiting based on changes to production environment
@@ -114,6 +120,7 @@ The service implements the following features.
 - Host name inquiry
 - Support for multiple encodings (see: [Encoding](#encoding) below)
 - Support for both IPv4 and IPv6
+- Dates in [ISO:8601] format
 
 <a id="implementation-limitations"></a>
 # Implementation Limitations
@@ -122,6 +129,8 @@ The service implements the following features.
 ## Localization
 
 In general the service is not localized and all WHOIS information is provided in English.
+
+Dates are provided in in [ISO:8601] format.
 
 <a id="media-type--format"></a>
 ## Media-type / Format
@@ -185,7 +194,7 @@ Correct specification using `curl` should be as follows:
 
 ```bash
 $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/domain/eksempel.dk
-{"createddate":"1999\/05\/17","dnssec":"J","domain":"eksempel.dk","domain_encoded":"eksempel.dk","domain_type":"V","message":"OK","nameservers":{"auth01.ns.dk-hostmaster.dk":{"domain":"eksempel.dk","domain_encoded":"eksempel.dk","hostname":"auth01.ns.dk-hostmaster.dk","hostname_encoded":"auth01.ns.dk-hostmaster.dk"},"auth02.ns.dk-hostmaster.dk":{"domain":"eksempel.dk","domain_encoded":"eksempel.dk","hostname":"auth02.ns.dk-hostmaster.dk","hostname_encoded":"auth02.ns.dk-hostmaster.dk"}},"paiduntildate":"2022\/06\/30","periodqty":"5","public_deletedate":null,"public_domain_status":"A","registrant":{"attention":null,"city":"København S","countryregionid":"DK","mobilephone":null,"name":"DK HOSTMASTER A\/S","phone":null,"street1":"Ørestads Boulevard 108, 11.","street2":null,"street3":null,"telefax":null,"useridtype":"V","validregistrant":"1","zipcode":"2300"},"status":200}
+{"createddate": "1999-05-17T00:00:00+02:00","dnssec": "J","domain": "eksempel.dk","domain_encoded": "eksempel.dk","domain_type": "V","message": "OK","nameservers": {"auth01.ns.dk-hostmaster.dk": {"domain": "eksempel.dk","domain_encoded": "eksempel.dk","hostname": "auth01.ns.dk-hostmaster.dk","hostname_encoded": "auth01.ns.dk-hostmaster.dk"},"auth02.ns.dk-hostmaster.dk": {"domain": "eksempel.dk","domain_encoded": "eksempel.dk","hostname": "auth02.ns.dk-hostmaster.dk","hostname_encoded": "auth02.ns.dk-hostmaster.dk"}},"paiduntildate": "2022-06-30T00:00:00+02:00","periodqty": "5","public_deletedate": null,"public_domain_status": "A","registrant": {"city": "København S","countryregionid": "DK","name": "DK HOSTMASTER A/S","phone": null,"street1": "Ørestads Boulevard 108, 11.","street2": null,"street3": null,"useridtype": "V","zipcode": "2300"},"status": 200}
 ```
 
 And for `httpie`
@@ -206,7 +215,7 @@ Vary: Accept-Encoding
 Vary: Origin
 
 {
-    "createddate": "1999/05/17",
+    "createddate": "1999-05-17T00:00:00+02:00",
     "dnssec": "J",
     "domain": "eksempel.dk",
     "domain_encoded": "eksempel.dk",
@@ -226,23 +235,19 @@ Vary: Origin
             "hostname_encoded": "auth02.ns.dk-hostmaster.dk"
         }
     },
-    "paiduntildate": "2022/06/30",
+    "paiduntildate": "2022-06-30T00:00:00+02:00",
     "periodqty": "5",
     "public_deletedate": null,
     "public_domain_status": "A",
     "registrant": {
-        "attention": null,
         "city": "København S",
         "countryregionid": "DK",
-        "mobilephone": null,
         "name": "DK HOSTMASTER A/S",
         "phone": null,
         "street1": "Ørestads Boulevard 108, 11.",
         "street2": null,
         "street3": null,
-        "telefax": null,
         "useridtype": "V",
-        "validregistrant": "1",
         "zipcode": "2300"
     },
     "status": 200
@@ -258,7 +263,64 @@ As of version 2.X.X of the service, admin/proxy information is no longer part of
 
 As of version 3.X.X of the service, registrant user-id/handle information is no longer part of the response data.
 
-As of version 4.X.X of the service, information on a domain name offered from a waiting list is available.
+As of version 4.X.X of the service:
+
+- information on a domain name offered from a waiting list is available.
+- registrar information is included in the response data.
+
+With the new registrar information included where applicable the responses can and will vary depending on the model chosen for administration of the given domain name.
+
+If the domain name is under registrar management, a registrar data section is included:
+
+```json
+"registrar": {
+    "city": "København S",
+    "countryregionid": "DK",
+    "is_public": false,
+    "logo": "",
+    "name": "DK Hostmaster A/S",
+    "phone": "+45 33 64 60 60",
+    "street1": "Ørestads Boulevard 108, 11.",
+    "street2": null,
+    "street3": null,
+    "url": "www.dk-hostmaster.dk",
+    "useridtype": "V",
+    "zipcode": "2300"
+},
+```
+
+NB: The above example is constructed.
+
+The fields are:
+
+- `city`, city part of address
+- `countryregionid`, country part of address
+- `is_public`, flag indicating if the registrar is listed in the public registrar listing
+- `logo`, URL to public logo
+- `name`, name
+- `phone`, public phone number
+- `street1`, first street part of address
+- `street2`, second street part of address
+- `street3`, third street part of address
+- `useridtype`, internal type indicating whether the entity is an association, company, individual or public organization
+- `zipcode`, zipcode part of address
+
+Do note that the listing on the public registrar listing and have address information redacted from public interfaces is not that same.
+
+If the domain name is under registrar management, but the registrars address information is not public, the section look as follows:
+
+```json
+"registrar": {
+    "is_public": false
+}
+```
+
+If the domain name is under registrant management, not registrar data is included.
+
+So the responses can be divided into two groups based on the registrar data section
+
+- Registrant managed, section is not included
+- Registrar managed, section is included, excluding address data if the address is not public
 
 <a id="api"></a>
 ### API
@@ -291,46 +353,42 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/do
 
 ```json
 {
-  "createddate": "1999/05/17",
-  "dnssec": "J",
-  "domain": "eksempel.dk",
-  "domain_encoded": "eksempel.dk",
-  "domain_type": "V",
-  "message": "OK",
-  "nameservers": {
-    "auth01.ns.dk-hostmaster.dk": {
-      "domain": "eksempel.dk",
-      "domain_encoded": "eksempel.dk",
-      "hostname": "auth01.ns.dk-hostmaster.dk",
-      "hostname_encoded": "auth01.ns.dk-hostmaster.dk"
+    "createddate": "1999-05-17T00:00:00+02:00",
+    "dnssec": "J",
+    "domain": "eksempel.dk",
+    "domain_encoded": "eksempel.dk",
+    "domain_type": "V",
+    "message": "OK",
+    "nameservers": {
+        "auth01.ns.dk-hostmaster.dk": {
+            "domain": "eksempel.dk",
+            "domain_encoded": "eksempel.dk",
+            "hostname": "auth01.ns.dk-hostmaster.dk",
+            "hostname_encoded": "auth01.ns.dk-hostmaster.dk"
+        },
+        "auth02.ns.dk-hostmaster.dk": {
+            "domain": "eksempel.dk",
+            "domain_encoded": "eksempel.dk",
+            "hostname": "auth02.ns.dk-hostmaster.dk",
+            "hostname_encoded": "auth02.ns.dk-hostmaster.dk"
+        }
     },
-    "auth02.ns.dk-hostmaster.dk": {
-      "domain": "eksempel.dk",
-      "domain_encoded": "eksempel.dk",
-      "hostname": "auth02.ns.dk-hostmaster.dk",
-      "hostname_encoded": "auth02.ns.dk-hostmaster.dk"
-    }
-  },
-  "paiduntildate": "2022/06/30",
-  "periodqty": "5",
-  "public_deletedate": null,
-  "public_domain_status": "A",
-  "registrant": {
-    "attention": null,
-    "city": "København S",
-    "countryregionid": "DK",
-    "mobilephone": null,
-    "name": "DK HOSTMASTER A/S",
-    "phone": null,
-    "street1": "Ørestads Boulevard 108, 11.",
-    "street2": null,
-    "street3": null,
-    "telefax": null,
-    "useridtype": "V",
-    "validregistrant": "1",
-    "zipcode": "2300"
-  },
-  "status": 200
+    "paiduntildate": "2022-06-30T00:00:00+02:00",
+    "periodqty": "5",
+    "public_deletedate": null,
+    "public_domain_status": "A",
+    "registrant": {
+        "city": "København S",
+        "countryregionid": "DK",
+        "name": "DK HOSTMASTER A/S",
+        "phone": null,
+        "street1": "Ørestads Boulevard 108, 11.",
+        "street2": null,
+        "street3": null,
+        "useridtype": "V",
+        "zipcode": "2300"
+    },
+    "status": 200
 }
 ```
 
@@ -426,46 +484,42 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/qu
 
 ```json
 {
-  "createddate": "1999/05/17",
-  "dnssec": "J",
-  "domain": "eksempel.dk",
-  "domain_encoded": "eksempel.dk",
-  "domain_type": "V",
-  "message": "OK",
-  "nameservers": {
-    "auth01.ns.dk-hostmaster.dk": {
-      "domain": "eksempel.dk",
-      "domain_encoded": "eksempel.dk",
-      "hostname": "auth01.ns.dk-hostmaster.dk",
-      "hostname_encoded": "auth01.ns.dk-hostmaster.dk"
+    "createddate": "1999-05-17T00:00:00+02:00",
+    "dnssec": "J",
+    "domain": "eksempel.dk",
+    "domain_encoded": "eksempel.dk",
+    "domain_type": "V",
+    "message": "OK",
+    "nameservers": {
+        "auth01.ns.dk-hostmaster.dk": {
+            "domain": "eksempel.dk",
+            "domain_encoded": "eksempel.dk",
+            "hostname": "auth01.ns.dk-hostmaster.dk",
+            "hostname_encoded": "auth01.ns.dk-hostmaster.dk"
+        },
+        "auth02.ns.dk-hostmaster.dk": {
+            "domain": "eksempel.dk",
+            "domain_encoded": "eksempel.dk",
+            "hostname": "auth02.ns.dk-hostmaster.dk",
+            "hostname_encoded": "auth02.ns.dk-hostmaster.dk"
+        }
     },
-    "auth02.ns.dk-hostmaster.dk": {
-      "domain": "eksempel.dk",
-      "domain_encoded": "eksempel.dk",
-      "hostname": "auth02.ns.dk-hostmaster.dk",
-      "hostname_encoded": "auth02.ns.dk-hostmaster.dk"
-    }
-  },
-  "paiduntildate": "2022/06/30",
-  "periodqty": "5",
-  "public_deletedate": null,
-  "public_domain_status": "A",
-  "registrant": {
-    "attention": null,
-    "city": "København S",
-    "countryregionid": "DK",
-    "mobilephone": null,
-    "name": "DK HOSTMASTER A/S",
-    "phone": null,
-    "street1": "Ørestads Boulevard 108, 11.",
-    "street2": null,
-    "street3": null,
-    "telefax": null,
-    "useridtype": "V",
-    "validregistrant": "1",
-    "zipcode": "2300"
-  },
-  "status": 200
+    "paiduntildate": "2022-06-30T00:00:00+02:00",
+    "periodqty": "5",
+    "public_deletedate": null,
+    "public_domain_status": "A",
+    "registrant": {
+        "city": "København S",
+        "countryregionid": "DK",
+        "name": "DK HOSTMASTER A/S",
+        "phone": null,
+        "street1": "Ørestads Boulevard 108, 11.",
+        "street2": null,
+        "street3": null,
+        "useridtype": "V",
+        "zipcode": "2300"
+    },
+    "status": 200
 }
 ```
 
@@ -510,9 +564,7 @@ DK Hostmaster operates a mailing list for discussion and inquiries  about the DK
 <a id="issue-reporting"></a>
 ## Issue Reporting
 
-For issue reporting related to this specification, the WHOIS implementation or the production environment, please contact us.  You are of course welcome to post these to the mailing list mentioned above, otherwise use the address specified below:
-
-- `info@dk-hostmaster.dk`
+For issue reporting related to this specification, the WHOIS implementation or the production environment, please contact us. You are of course welcome to post these to the mailing list mentioned above, otherwise use the regular support channels.
 
 <a id="additional-information"></a>
 ## Additional Information
@@ -551,3 +603,5 @@ The services hold their own table of return codes, this is just a curated list t
 [RFC:3492]: https://tools.ietf.org/html/rfc3492
 [RFC:3912]: https://tools.ietf.org/html/rfc3912
 [RFC:3986]: https://tools.ietf.org/html/rfc3986
+[ISO:8601]: https://www.iso.org/iso-8601-date-and-time-format.html
+[CONCEPT]: https://www.dk-hostmaster.dk/en/new-basis-collaboration-between-registrars-and-dk-hostmaster
