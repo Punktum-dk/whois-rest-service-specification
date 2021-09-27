@@ -78,8 +78,7 @@ This document is copyright by DK Hostmaster A/S and is licensed under the MIT Li
 
 - 4.0 2021-08-26
   - Added documentation on data retrieval for domain names offered from a waiting list
-    introduced with service version 4.0.0
-  - Date fields in responses have changed format from: `YYYY/MM/DD` to `YYYY-MM-DDTHH:MM:SSTZ` adhering to [ISO:8691]
+  - Date fields in responses have changed format from: `YYYY/MM/DD` to `YYYY-MM-DDTHH:MM:SSTZ` adhering to [ISO:8691][ISO:8601]
   - Responses to domain name queries have been extended with registrar information
   - Above extensions was introduced with version 4.0.0 of the DK Hostmaster WHOIS RESTful service
 
