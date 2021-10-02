@@ -5,8 +5,8 @@
 ![Markdownlint Action](https://github.com/DK-Hostmaster/whois-rest-service-specification/workflows/Markdownlint%20Action/badge.svg)
 ![Spellcheck Action](https://github.com/DK-Hostmaster/whois-rest-service-specification/workflows/Spellcheck%20Action/badge.svg)
 
-2021-08-26
-Revision: 4.0
+2021-10-02
+Revision: 4.1
 
 **PLEASE NOTE THAT THIS SERVICE IS CURRENTLY IN BETA AND CHANGES MIGHT BE IMPLEMENTED WHICH BREAK BACKWARDS COMPATIBILITY**
 
@@ -40,6 +40,7 @@ Revision: 4.0
     - [API](#api-4)
     - [Domain Example](#domain-example)
     - [Host Example](#host-example)
+- [References](#references)
 - [Resources](#resources)
   - [Mailing list](#mailing-list)
   - [Issue Reporting](#issue-reporting)
@@ -76,9 +77,13 @@ This document is copyright by DK Hostmaster A/S and is licensed under the MIT Li
 <a id="document-history"></a>
 ## Document History
 
+- 4.1 2021-10-02
+  - Added [References](#references) section
+  - Corrected a few links and cleaned up some of the resources
+
 - 4.0 2021-08-26
   - Added documentation on data retrieval for domain names offered from a waiting list
-  - Date fields in responses have changed format from: `YYYY/MM/DD` to `YYYY-MM-DDTHH:MM:SSTZ` adhering to [ISO:8691][ISO:8601]
+  - Date fields in responses have changed format from: `YYYY/MM/DD` to `YYYY-MM-DDTHH:MM:SSTZ` adhering to [ISO:8601][ISO:8601]
   - Responses to domain name queries have been extended with registrar information
   - Above extensions was introduced with version 4.0.0 of the DK Hostmaster WHOIS RESTful service
 
@@ -129,7 +134,7 @@ The service implements the following features.
 
 In general the service is not localized and all WHOIS information is provided in English.
 
-Dates are provided in in [ISO:8601] format.
+Dates are provided in in [ISO:8601][ISO:8601] format.
 
 <a id="media-type--format"></a>
 ## Media-type / Format
@@ -142,7 +147,7 @@ The service only supports **JSON**.
 The service supports the following encodings:
 
 - UTF-8
-- Punycode [RFC:3492][RFC:3492]
+- Punycode [RFC:5891][RFC:5891]
 - ASCII
 - URI encoding [RFC:3986][RFC:3986]
 
@@ -548,6 +553,16 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/qu
 }
 ```
 
+<a id="references"></a>
+# References
+
+Here is a list of documents and references used in this document
+
+1. [RFC:3912 WHOIS Protocol Specification][RFC:3912]
+1. [RFC:5891 Internationalized Domain Names in Applications (IDNA): Protocol][RFC:5891]
+1. [RFC:3986 Uniform Resource Identifier (URI): Generic Syntax][RFC:3986]
+1. [ISO-8601: International date format][ISO-8601]
+
 <a id="resources"></a>
 # Resources
 
@@ -604,3 +619,4 @@ The services hold their own table of return codes, this is just a curated list t
 [RFC:3986]: https://tools.ietf.org/html/rfc3986
 [ISO:8601]: https://www.iso.org/iso-8601-date-and-time-format.html
 [CONCEPT]: https://www.dk-hostmaster.dk/en/new-basis-collaboration-between-registrars-and-dk-hostmaster
+[RFC:5891]: https://tools.ietf.org/html/rfc5891
