@@ -5,8 +5,8 @@
 ![Markdownlint Action](https://github.com/DK-Hostmaster/whois-rest-service-specification/workflows/Markdownlint%20Action/badge.svg)
 ![Spellcheck Action](https://github.com/DK-Hostmaster/whois-rest-service-specification/workflows/Spellcheck%20Action/badge.svg)
 
-2021-10-02
-Revision: 4.1
+2021-10-04
+Revision: 4.2
 
 **PLEASE NOTE THAT THIS SERVICE IS CURRENTLY IN BETA AND CHANGES MIGHT BE IMPLEMENTED WHICH BREAK BACKWARDS COMPATIBILITY**
 
@@ -20,6 +20,9 @@ Revision: 4.1
   - [Document History](#document-history)
 - [The .dk Registry in Brief](#the-dk-registry-in-brief)
 - [Features](#features)
+- [Available Environments](#available-environments)
+  - [Production Environment](#production-environment)
+  - [Sandbox Environment](#sandbox-environment)
 - [Implementation Limitations](#implementation-limitations)
   - [Localization](#localization)
   - [Media-type / Format](#media-type--format)
@@ -40,6 +43,7 @@ Revision: 4.1
     - [API](#api-4)
     - [Domain Example](#domain-example)
     - [Host Example](#host-example)
+- [Test Data](#test-data)
 - [References](#references)
 - [Resources](#resources)
   - [Mailing list](#mailing-list)
@@ -76,6 +80,9 @@ This document is copyright by DK Hostmaster A/S and is licensed under the MIT Li
 
 <a id="document-history"></a>
 ## Document History
+
+- 4.2 2021-10-04
+  - Added information on [Available Environments](#available-environments) with the availability of the WHOIS API service in the sandbox environment and related [Test Data](#test-data)
 
 - 4.1 2021-10-02
   - Added [References](#references) section
@@ -125,6 +132,34 @@ The service implements the following features.
 - Support for multiple encodings (see: [Encoding](#encoding) below)
 - Support for both IPv4 and IPv6
 - Dates in [ISO:8601] format
+
+<a id="available-environments"></a>
+
+## Available Environments
+
+DK Hostmaster offers the following environments:
+
+| Environment | Role | Policies |
+| ----------- | ---- | ----------- |
+| production  | production | This environment is the production environment for the DK Hostmaster WHOIS API Service |
+| sandbox     | development | This environment is intended for client development towards the DK Hostmaster WHOIS API Service |
+
+For information on what service and specification is applicable and available, consult the [DK Hostmaster WHOIS Service Wiki][WIKI]
+
+For use please see the section on [Test Data](#test-data).
+
+<a id="production-environment"></a>
+### Production Environment
+
+- requests made to this environment will reflect live production data
+
+Production is available at: `whois.dk-hostmaster.dk` port `43`
+
+<a id="sandbox-environment"></a>
+### Sandbox Environment
+
+- Queries made to this environment will reflect data only available in the isolated sandbox environment, please see the [sandbox environment specification](https://github.com/DK-Hostmaster/sandbox-environment-specification) for details.
+- Please additional data please, see the section on [Test Data](#test-data).
 
 <a id="implementation-limitations"></a>
 # Implementation Limitations
@@ -553,6 +588,21 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/qu
 }
 ```
 
+<a id="test-data"></a>
+## Test Data
+
+The sandbox uses a combination of a predefined set of test data and data added to the sandbox environment by use.
+
+<a id="domains"></a>
+### Domains
+
+| Domain name | Status | Notes |
+|-------------|--------|-------|
+| `dk-hostmaster.dk` | `A` | The domain is visible and active |
+| `æøåöäüé.dk` | `A` | The domain is visible and active |
+| `waiting-list.dk` | `W` | The domain status is awaiting the designated registrant |
+| * | * | Depending on what domains have been registered with the sandbox environment. Please see the [sandbox environment specification](https://github.com/DK-Hostmaster/sandbox-environment-specification) for details. |
+
 <a id="references"></a>
 # References
 
@@ -620,3 +670,4 @@ The services hold their own table of return codes, this is just a curated list t
 [ISO:8601]: https://www.iso.org/iso-8601-date-and-time-format.html
 [CONCEPT]: https://www.dk-hostmaster.dk/en/new-basis-collaboration-between-registrars-and-dk-hostmaster
 [RFC:5891]: https://tools.ietf.org/html/rfc5891
+[WIKI]: https://github.com/DK-Hostmaster/whois-rest-service-specification/wiki
