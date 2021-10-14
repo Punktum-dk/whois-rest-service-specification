@@ -611,7 +611,7 @@ Here is a list of documents and references used in this document
 1. [RFC:3912 WHOIS Protocol Specification][RFC:3912]
 1. [RFC:5891 Internationalized Domain Names in Applications (IDNA): Protocol][RFC:5891]
 1. [RFC:3986 Uniform Resource Identifier (URI): Generic Syntax][RFC:3986]
-1. [ISO-8601: International date format][ISO-8601]
+1. [ISO-8601: International date format][ISO:8601]
 
 <a id="resources"></a>
 # Resources
