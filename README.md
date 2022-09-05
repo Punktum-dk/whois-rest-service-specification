@@ -441,6 +441,7 @@ If the queried domain name is offered from a waiting list, the response will loo
     "public_domain_status": "W",
     "status": 200
 }
+```
 
 Do note the special status: `W`.
 
