@@ -1,14 +1,6 @@
 ![DK Hostmaster Logo](https://www.dk-hostmaster.dk/sites/default/files/dk-logo_0.png)
 
-# DK Hostmaster RESTful WHOIS Service Specification
-
-![Markdownlint Action](https://github.com/DK-Hostmaster/whois-rest-service-specification/workflows/Markdownlint%20Action/badge.svg)
-![Spellcheck Action](https://github.com/DK-Hostmaster/whois-rest-service-specification/workflows/Spellcheck%20Action/badge.svg)
-
-2021-10-04
-Revision: 4.2
-
-**PLEASE NOTE THAT THIS SERVICE IS CURRENTLY IN BETA AND CHANGES MIGHT BE IMPLEMENTED WHICH BREAK BACKWARDS COMPATIBILITY**
+# Punktum dk RESTful WHOIS Service Specification
 
 # Table of Contents
 
