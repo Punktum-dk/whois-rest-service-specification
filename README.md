@@ -386,8 +386,6 @@ The following fields in the domain response return coded values.
 
 This API returns data on a given host (name server).
 
-Punktum dk requires glue records for name servers ending in `.dk` that serve their own zone. Glue records are not required for name servers whose host names are served by other TLDs.
-
 <a id="api-1"></a>
 ## API
 
