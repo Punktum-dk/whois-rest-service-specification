@@ -25,6 +25,7 @@
   - [domain](#domain)
     - [API](#api)
     - [Example](#example)
+    - [Example waiting list](#example-waiting-list)
     - [Field Values](#field-values)
   - [host](#host)
     - [API](#api-1)
@@ -51,7 +52,8 @@ The RESTful WHOIS service is optimized for structured querying, in contrast to t
 
 The service provides information on domain names and, where applicable, on the registrars managing them.
 
-A .dk domain name is administered under one of two models. 
+A .dk domain name is administered under one of two models.
+
 - Under "registrar management", a registrar administers the domain name on behalf of the registrant.
 - Under "registrant management", the registrant administers the domain name directly.
 
@@ -82,6 +84,49 @@ This document is owned and maintained by Punktum dk A/S and must not be distribu
 
 This document is copyright by Punktum dk A/S and is licensed under the MIT License, please see the separate LICENSE file for details.
 
+<a id="document-history"></a>
+## Document History
+
+- 4.2.1 2026-07-24
+  - Rewritten and modernized following Punktum dk's transition to registrar management
+  - Refreshed all examples and field documentation based on current service responses
+
+- 4.2 2021-10-04
+  - Added information on [Available Environments](#available-environments) with the availability of the WHOIS API service in the sandbox environment and related [Test Data](#test-data)
+
+- 4.1 2021-10-02
+  - Added [References](#references) section
+  - Corrected a few links and cleaned up some of the resources
+
+- 4.0 2021-08-26
+  - Added documentation on data retrieval for domain names offered from a waiting list
+  - Date fields in responses have changed format from: `YYYY/MM/DD` to `YYYY-MM-DDTHH:MM:SSTZ` adhering to ISO 8601
+  - Responses to domain name queries have been extended with registrar information
+  - Above extensions was introduced with version 4.0.0 of the DK Hostmaster WHOIS RESTful service
+
+- 3.1 2021-03-15
+  - Added appendix on status values and clarified the explanation on status
+
+- 3.0 2019-11-25
+  - Support for queries using user handles are no longer supported and the API endpoint `https://whois-api.dk-hostmaster.dk/handle/{userid}` has been removed
+  - Support for queries using roles are not longer supported and the API endpoint `https://whois-api.dk-hostmaster.dk/domain/list/handle/{userid}/role/{role}` has been removed
+  - Support for user handles in domain query result sets have been removed (`registrant_userid`, `query_userid` and `userid`), for API endpoints: `https://whois-api.dk-hostmaster.dk/domain/{domainname}` and `https://whois-api.dk-hostmaster.dk/#query`
+  - Above deprecations was introduced with version 3.0.0 of the DK Hostmaster WHOIS RESTful service
+
+- 2.1 2019-11-19
+  - Updated section on rate limiting based on changes to production environment
+
+- 2.0 2019-04-30
+  - Major update based on the changes with major release 2.0.0 of the WHOIS RESTful service
+  - Documenting removal of public information on non-registrant users for handle (users) and domain name inquiries
+  - Documenting removal of name server contacts for host (name server) inquiries
+
+- 1.1 2017-05-01
+  - Correction of typos and minor cleanups, thanks to the contributors for the PRs
+
+- 1.0 2016-11-08
+  - Initial revision
+
 <a id="features"></a>
 # Features
 
@@ -105,14 +150,14 @@ Punktum dk offers the following environments:
 Access to the RESTful WHOIS service requires IP whitelisting in both environments. IP whitelisting for this service is administered solely by Punktum dk and cannot be managed by registrars through the Registrar Portal (RP). To request IP whitelisting, please contact Punktum dk via the [registrar contact form][CONTACTFORM].
 
 <a id="production-environment"></a>
-# Production Environment
+## Production Environment
 
 - Requests made to this environment will reflect live production data.
 
 Production is available at: `https://whois-api.dk-hostmaster.dk`
 
 <a id="sandbox-environment"></a>
-# Sandbox Environment
+## Sandbox Environment
 
 - Requests made to this environment will reflect data only available in the isolated sandbox environment, please see the [sandbox environment specification](https://github.com/Punktum-dk/sandbox-environment-specification) for details.
 
@@ -186,12 +231,12 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/do
 The examples in this document use `curl`, but any HTTP client capable of setting the `Accept` header, such as [HTTPie](https://httpie.io/), can be used.
 
 <a id="domain"></a>
-# domain
+## domain
 
 This API returns data on a given domain name.
 
 <a id="api"></a>
-## API
+### API
 
 Domain name information is requested using the following endpoint:
 
@@ -202,7 +247,7 @@ GET /domain/{domainname}
 Where `{domainname}` is the domain name being inquired about. The domain name can be provided using any of the encodings listed under [Encoding](#encoding); for IDNA domain names, either the Unicode form or the punycode (ACE) form can be used.
 
 <a id="example"></a>
-## Example
+### Example
 
 Requesting information for the domain name `eksempel.dk`:
 
@@ -280,7 +325,7 @@ The top-level fields are:
 | `message`              | Status message accompanying the response, e.g. `OK`                                                               |
 | `nameservers`          | The name servers serving the domain name, see below                                                               |
 | `paiduntildate`        | Date the domain name is paid until, in [ISO 8601][ISO:8601] format                                                |
-| `periodqty`            | Registration period in years (`1`, `2`, `3` or `5`)                                                               |
+| `periodqty`            | Registration period in years                                                                                      |
 | `public_deletedate`    | Date the domain name is scheduled for deletion, in [ISO 8601][ISO:8601] format, `null` if not set                 |
 | `public_domain_status` | The public status of the domain name, see [Field Values](#field-values)                                           |
 | `registrant`           | The registrant of the domain name, see below                                                                      |
@@ -344,7 +389,7 @@ A domain name offered from a waiting list is not registered, and the response th
 ```
 
 <a id="field-values"></a>
-## Field Values
+### Field Values
 
 The following fields in the domain response return coded values.
 
@@ -382,12 +427,12 @@ The following fields in the domain response return coded values.
 | `R`   | The registrant has been assessed by Punktum dk's risk engine as not required to complete the identity check |
 
 <a id="host"></a>
-# host
+## host
 
 This API returns data on a given host (name server).
 
 <a id="api-1"></a>
-## API
+### API
 
 Host information is requested using the following endpoint:
 
@@ -398,7 +443,7 @@ GET /host/{hostname}
 Where `{hostname}` is the host name being inquired about. The host name can be provided using any of the encodings listed under [Encoding](#encoding); for IDNA host names, either the Unicode form or the punycode (ACE) form can be used.
 
 <a id="example-1"></a>
-## Example
+### Example
 
 Requesting information for the host `ns1.example.dk`:
 
@@ -431,7 +476,7 @@ The fields are:
 | `status`            | The HTTP status code of the response                                              |
 
 <a id="field-values-1"></a>
-## Field Values
+### Field Values
 
 The following fields in the host response return coded values.
 
@@ -452,6 +497,81 @@ The following fields in the host response return coded values.
 | `S`   | The host is marked for deletion |
 ```
 
+<a id="query"></a>
+## query
 
-[ISO 3166-1]: https://en.wikipedia.org/wiki/ISO_3166-1
+This API is a generic entry point that accepts both domain names and host names. It determines the entity type of the inquiry and relays it to the specialized API, returning the same response as a direct inquiry to [domain](#domain) or [host](#host).
+
+This is useful when the entity type of the inquiry is not known in advance.
+
+<a id="api-2"></a>
+### API
+
+Information is requested using the following endpoint:
+
+```
+GET /query/{name}
+```
+
+Where `{name}` is the domain name or host name being inquired about. The name can be provided using any of the encodings listed under [Encoding](#encoding).
+
+<a id="domain-example"></a>
+### Domain Example
+
+Querying a domain name returns the same response as the [domain](#domain) API:
+
+```bash
+$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/query/eksempel.dk
+```
+
+<a id="host-example"></a>
+### Host Example
+
+Querying a host name returns the same response as the [host](#host) API:
+
+```bash
+$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/query/auth01.ns.dk-hostmaster.dk
+```
+
+<a id="test-data"></a>
+# Test Data
+
+The sandbox environment provides a set of predefined test domains, in addition to any domains you register yourself via EPP or RP. For the list of predefined test domains and details on the sandbox environment, see the [sandbox environment specification](https://github.com/Punktum-dk/sandbox-environment-specification).
+
+One predefined test domain is worth noting here: `waiting-list.dk` simulates the transient `Offered to waiting list` state, which is otherwise difficult to reproduce on demand. It can be queried in the sandbox environment to see the response shown under [the domain example for a name offered to the waiting list](#example-waiting-list).
+
+<a id="references"></a>
+# References
+
+Here is a list of documents and references used in this document:
+
+1. [RFC:5891 Internationalized Domain Names in Applications (IDNA): Protocol][RFC:5891]
+1. [ISO 3166-1: Alpha-2 two-letter country codes][ISO 3166-1]
+1. [ISO 8601: International date format][ISO:8601]
+
+<a id="issue-reporting"></a>
+# Issue Reporting
+
+For issue reporting related to this specification, the RESTful WHOIS implementation, or the production environment, please contact us at registrar@punktum.dk or via the [registrar contact form][CONTACTFORM].
+
+<a id="appendices"></a>
+# Appendices
+
+<a id="http-status-codes"></a>
+## HTTP Status Codes
+
+The service uses the following HTTP status codes:
+
+| Status Code | Description                   |
+| ----------- | ----------------------------- |
+| `200`       | OK                            |
+| `400`       | Bad request                   |
+| `404`       | Object not found              |
+| `415`       | Unsupported media type        |
+| `500`       | Internal server error         |
+| `503`       | Service temporarily unavailable |
+
+[RFC:5891]: https://www.rfc-editor.org/rfc/rfc5891
+[ISO-3166-1]: https://en.wikipedia.org/wiki/ISO_3166-1
+[ISO-8601]: https://en.wikipedia.org/wiki/ISO_8601
 [CONTACTFORM]: https://punktum.dk/en/contact-customer-service?lvl1=Registrars&lvl2=CSRegistrarOther
