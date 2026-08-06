@@ -193,9 +193,9 @@ The service supports the following encodings:
 <a id="rate-limiting"></a>
 ## Rate Limiting
 
-The service allows one request per second per source IP. Requests exceeding this rate are answered with `503 Service Temporarily Unavailable`.
+The service does not enforce a rate limit. You can query the service as often as your integration requires, in both the production and the sandbox environment.
 
-We reserve the right to adjust the rate limiting in order to provide a high quality of service.
+👉 Query volumes are expected to be proportional to actual business use. Punktum dk reserves the right to introduce a rate limit, or to remove IP-whitelisting, if use of the service affects the overall quality of the service.
 
 <a id="security"></a>
 ## Security
