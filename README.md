@@ -1,16 +1,16 @@
-![DK Hostmaster Logo](https://www.dk-hostmaster.dk/sites/default/files/dk-logo_0.png)
+![Punktum dk Logo](https://punktum.dk/sites/default/files/logo/dk_logo_symbol_1.png)
 
 # Punktum dk RESTful WHOIS Service Specification
 
-# Table of Contents
+## Table of Contents
 
-<!-- MarkdownTOC bracket=round levels="1,2,3,4" indent="  " autolink="true"  autoanchor="true" -->
+<!-- MarkdownTOC bracket=round levels="1,2,3,4" indent="  " autolink="true" autoanchor="true" -->
 
 - [Introduction](#introduction)
+- [The .dk Registry in Brief](#the-dk-registry-in-brief)
 - [About this Document](#about-this-document)
   - [License](#license)
   - [Document History](#document-history)
-- [The .dk Registry in Brief](#the-dk-registry-in-brief)
 - [Features](#features)
 - [Available Environments](#available-environments)
   - [Production Environment](#production-environment)
@@ -25,53 +25,74 @@
   - [domain](#domain)
     - [API](#api)
     - [Example](#example)
-  - [domain list](#domain-list)
+    - [Example waiting list](#example-waiting-list)
+    - [Field Values](#field-values)
+  - [host](#host)
     - [API](#api-1)
     - [Example](#example-1)
-  - [host](#host)
-    - [API](#api-3)
-    - [Example](#example-3)
+    - [Field Values](#field-values-1)
   - [query](#query)
-    - [API](#api-4)
+    - [API](#api-2)
     - [Domain Example](#domain-example)
     - [Host Example](#host-example)
 - [Test Data](#test-data)
 - [References](#references)
-- [Resources](#resources)
-  - [Mailing list](#mailing-list)
-  - [Issue Reporting](#issue-reporting)
-  - [Additional Information](#additional-information)
+- [Issue Reporting](#issue-reporting)
 - [Appendices](#appendices)
   - [HTTP Status Codes](#http-status-codes)
-  - [Public Status Values](#public-domain-status-values)
 
 <!-- /MarkdownTOC -->
 
 <a id="introduction"></a>
 # Introduction
 
-This document describes and specifies the a RESTful alternative to the WHOIS implementation offered by DK Hostmaster A/S. It is primarily aimed at a technical audience and the reader is required to have prior knowledge of the WHOIS protocol and possibly DNS registration.
+This document describes and specifies a RESTful alternative to the WHOIS service offered by Punktum dk. It is primarily aimed at a technical audience, and the reader is expected to have prior knowledge of the WHOIS protocol and DNS registration.
 
-The WHOIS RESTful service is optimized for structured querying in contrast to it's text-based origin implementing the [WHOIS service](https://github.com/DK-Hostmaster/whois-service-specification) responding on port 43,
+The RESTful WHOIS service is optimized for structured querying, in contrast to the text-based [WHOIS service](https://github.com/Punktum-dk/whois-service-specification) responding on port 43.
 
-With the introduction of the registrar model, the WHOIS capabilities are being extended so these can serve information on registrars.
+The service provides information on domain names and, where applicable, on the registrars managing them.
 
-The registrar model, [description here conceptually][concept], gives registrars the option to manage a customer’s .dk domain name if the customer would prefer this. This is referred to as "registrar management". The alternative allowing the customer to manage their domain name themselves is referred to as "registrant management".
+A .dk domain name is administered under one of two models.
+
+- Under "registrar management", a registrar administers the domain name on behalf of the registrant.
+- Under "registrant management", the registrant administers the domain name directly.
+
+The WHOIS response reflects which model applies to a given domain name.
+
+<a id="the-dk-registry-in-brief"></a>
+# The .dk Registry in Brief
+
+Punktum dk is the registry for the ccTLD for Denmark (.dk). The current model is based on a sole registry, with Punktum dk maintaining the central DNS registry for .dk.
 
 <a id="about-this-document"></a>
 # About this Document
 
-This specification describes version 4 (4.X.X) of the DK Hostmaster WHOIS RESTful service implementation. Future releases will be reflected in updates to this specification, please see the document history section below.
-The document describes the current DK Hostmaster WHOIS RESTful service implementation, for more general documentation on the used protocols and additional information please refer to the RFCs and additional resources in the References and Resources chapters below.
+This specification describes version 4.2.1 of the Punktum dk RESTful WHOIS service implementation. Future releases will be reflected in updates to this document; please refer to the [Document History](#document-history) below for changes.
+
+The document describes the current Punktum dk RESTful WHOIS service implementation. The specification aims to describe the latest release of the service, and the service version is listed in the [Document History](#document-history).
+
+This document is not the authoritative source for business and policy rules, and possible discrepancies between this and any authoritative sources are regarded as errors in this document. This document is the external technical specification describing the implementation facing the users, and is an interpretation of authoritative sources and can therefore be erroneous.
+
 Any future extensions and possible additions and changes to the implementation are not within the scope of this document and will not be discussed or mentioned throughout this document.
+
+All examples provided in the document are fabricated/modified from real data to demonstrate commands etc. Any resemblance to actual data is coincidental.
+
+This document is owned and maintained by Punktum dk A/S and must not be distributed without this information.
 
 <a id="license"></a>
 ## License
 
-This document is copyright by DK Hostmaster A/S and is licensed under the MIT License, please see the separate LICENSE file for details.
+This document is copyright by Punktum dk A/S and is licensed under the MIT License, please see the separate LICENSE file for details.
 
 <a id="document-history"></a>
 ## Document History
+
+- 5.5.1 2026-08-10
+  - Rewritten and modernized following Punktum dk's transition to registrar management
+  - Refreshed all examples and field documentation based on current service responses
+
+- 5.5.0 2026-06-09
+  - id_status field added to registrant information section
 
 - 4.2 2021-10-04
   - Added information on [Available Environments](#available-environments) with the availability of the WHOIS API service in the sandbox environment and related [Test Data](#test-data)
@@ -82,7 +103,7 @@ This document is copyright by DK Hostmaster A/S and is licensed under the MIT Li
 
 - 4.0 2021-08-26
   - Added documentation on data retrieval for domain names offered from a waiting list
-  - Date fields in responses have changed format from: `YYYY/MM/DD` to `YYYY-MM-DDTHH:MM:SSTZ` adhering to [ISO:8601][ISO:8601]
+  - Date fields in responses have changed format from: `YYYY/MM/DD` to `YYYY-MM-DDTHH:MM:SSTZ` adhering to ISO 8601
   - Responses to domain name queries have been extended with registrar information
   - Above extensions was introduced with version 4.0.0 of the DK Hostmaster WHOIS RESTful service
 
@@ -109,49 +130,43 @@ This document is copyright by DK Hostmaster A/S and is licensed under the MIT Li
 - 1.0 2016-11-08
   - Initial revision
 
-<a id="the-dk-registry-in-brief"></a>
-# The .dk Registry in Brief
-
-DK Hostmaster is the registry for the ccTLD for Denmark (dk). The current model used in Denmark is based on a sole registry, with DK Hostmaster maintaining the central DNS registry.
-
 <a id="features"></a>
 # Features
 
-The service implements the following features.
+The service implements the following features:
 
 - Domain name inquiry
 - Host name inquiry
-- Support for multiple encodings (see: [Encoding](#encoding) below)
-- Support for both IPv4 and IPv6
-- Dates in [ISO:8601] format
+- Registrar information for registrar-managed domain names
+- Support for multiple encodings (see [Encoding](#encoding) below)
 
 <a id="available-environments"></a>
+# Available Environments
 
-## Available Environments
+Punktum dk offers the following environments:
 
-DK Hostmaster offers the following environments:
+| Environment | Role        | Policies                                                                                        |
+| ----------- | ----------- | ----------------------------------------------------------------------------------------------- |
+| production  | production  | This environment is the production environment for the Punktum dk RESTful WHOIS Service         |
+| sandbox     | development | This environment is intended for client development towards the Punktum dk RESTful WHOIS Service |
 
-| Environment | Role | Policies |
-| ----------- | ---- | ----------- |
-| production  | production | This environment is the production environment for the DK Hostmaster WHOIS API Service |
-| sandbox     | development | This environment is intended for client development towards the DK Hostmaster WHOIS API Service |
-
-For information on what service and specification is applicable and available, consult the [DK Hostmaster WHOIS Service Wiki][WIKI]
-
-For use please see the section on [Test Data](#test-data).
+Access to the RESTful WHOIS service requires IP whitelisting in both environments. IP whitelisting for this service is administered solely by Punktum dk and cannot be managed by registrars through the Registrar Portal (RP). To request IP whitelisting, please contact Punktum dk via the [registrar contact form][CONTACTFORM].
 
 <a id="production-environment"></a>
-### Production Environment
+## Production Environment
 
-- requests made to this environment will reflect live production data
+- Requests made to this environment will reflect live production data.
 
-Production is available at: `whois.dk-hostmaster.dk` port `43`
+Production is available at: `https://whois-api.dk-hostmaster.dk`
 
 <a id="sandbox-environment"></a>
-### Sandbox Environment
+## Sandbox Environment
 
-- Queries made to this environment will reflect data only available in the isolated sandbox environment, please see the [sandbox environment specification](https://github.com/DK-Hostmaster/sandbox-environment-specification) for details.
-- Please additional data please, see the section on [Test Data](#test-data).
+- Requests made to this environment will reflect data only available in the isolated sandbox environment, please see the [sandbox environment specification](https://github.com/Punktum-dk/sandbox-environment-specification) for details.
+
+Sandbox is available at: `https://whois-api-sandbox.dk-hostmaster.dk/`
+
+For test data available in the sandbox environment, please see the section on [Test Data](#test-data).
 
 <a id="implementation-limitations"></a>
 # Implementation Limitations
@@ -159,9 +174,9 @@ Production is available at: `whois.dk-hostmaster.dk` port `43`
 <a id="localization"></a>
 ## Localization
 
-In general the service is not localized and all WHOIS information is provided in English.
+In general the service is not localized, and all WHOIS information is provided in English.
 
-Dates are provided in in [ISO:8601][ISO:8601] format.
+Dates are provided in [ISO 8601][ISO-8601] format.
 
 <a id="media-type--format"></a>
 ## Media-type / Format
@@ -174,213 +189,76 @@ The service only supports **JSON**.
 The service supports the following encodings:
 
 - UTF-8
-- Punycode [RFC:5891][RFC:5891]
+- Punycode (see also [RFC:5891])
 - ASCII
-- URI encoding [RFC:3986][RFC:3986]
+- URI encoding
 
 <a id="rate-limiting"></a>
 ## Rate Limiting
 
-We only allow one request per second per source IP.
+The service does not enforce a rate limit. You can query the service as often as your integration requires, in both the production and the sandbox environment.
 
-If rate is higher that acceptable, we return: `503 Service Temporarily Unavailable`
-
-We reserve the right to adjust the rate limiting in order to provide a high quality of service.
+👉 Query volumes are expected to be proportional to actual business use. Punktum dk reserves the right to introduce a rate limit, or to remove IP-whitelisting, if use of the service affects the overall quality of the service.
 
 <a id="security"></a>
 ## Security
 
-The service is only available under **TLS 1.2**
+The service supports the following protocols for transport security:
+
+- TLSv1.2
 
 <a id="service"></a>
 # Service
 
-The service is available at:
+The service offers the following APIs:
 
-- `https://whois-api.dk-hostmaster.dk`
+- `domain`, specialized for domain name inquiries
+- `host`, specialized for host (name server) inquiries
+- `query`, a generic API that relays to the specialized API matching the entity type of the inquiry
 
-The service offers four APIs, one specialized for each entity type:
+The base URLs for the production and sandbox environments are listed under [Available Environments](#available-environments).
 
-- domain (domain name)
-- host (hostname/name server)
-
-And a generic API:
-
-- query
-
-Which relays to the specific service APIs for the mapped entity being one of the ones listed above.
-
-The service requires that the accept header is specified to be `application/json`, all of the below examples demonstrates this using the command line utilities `curl` or `httpie`.
-
-As described under Implementation Limitations, the service only supports **JSON**. This has to be specified using the **HTTP** header: `Accept`
-
-If the header is unspecified, not specified correctly or specified to an unsupported format, the service will error with HTTP status code: `415`
+The service only supports **JSON**, which must be requested using the HTTP `Accept` header set to `application/json`. If the header is omitted, malformed, or set to an unsupported format, the service responds with HTTP status code `415 Unsupported Media Type`:
 
 ```bash
 $ curl https://whois-api.dk-hostmaster.dk/domain/eksempel.dk
 "Unsupported Media Type"
 ```
 
-Correct specification using `curl` should be as follows:
+The `Accept` header must be specified as follows:
 
 ```bash
 $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/domain/eksempel.dk
-{"createddate": "1999-05-17T00:00:00+02:00","dnssec": "J","domain": "eksempel.dk","domain_encoded": "eksempel.dk","domain_type": "V","message": "OK","nameservers": {"auth01.ns.dk-hostmaster.dk": {"domain": "eksempel.dk","domain_encoded": "eksempel.dk","hostname": "auth01.ns.dk-hostmaster.dk","hostname_encoded": "auth01.ns.dk-hostmaster.dk"},"auth02.ns.dk-hostmaster.dk": {"domain": "eksempel.dk","domain_encoded": "eksempel.dk","hostname": "auth02.ns.dk-hostmaster.dk","hostname_encoded": "auth02.ns.dk-hostmaster.dk"}},"paiduntildate": "2022-06-30T00:00:00+02:00","periodqty": "5","public_deletedate": null,"public_domain_status": "A","registrant": {"city": "København S","countryregionid": "DK","name": "DK HOSTMASTER A/S","phone": null,"street1": "Ørestads Boulevard 108, 11.","street2": null,"street3": null,"useridtype": "V","zipcode": "2300"},"status": 200}
 ```
 
-And for `httpie`
-
-```bash
-$ http https://whois-api.dk-hostmaster.dk/domain/eksempel.dk Accept:'application/json'
-
-HTTP/1.1 200 OK
-Cache-Control: max-age=1, no-cache
-Connection: keep-alive
-Content-Encoding: gzip
-Content-Type: application/json;charset=UTF-8
-Date: Mon, 25 Nov 2019 09:29:41 GMT
-Server: nginx
-Strict-Transport-Security: max-age=15768000
-Transfer-Encoding: chunked
-Vary: Accept-Encoding
-Vary: Origin
-
-{
-    "createddate": "1999-05-17T00:00:00+02:00",
-    "dnssec": "J",
-    "domain": "eksempel.dk",
-    "domain_encoded": "eksempel.dk",
-    "domain_type": "V",
-    "message": "OK",
-    "nameservers": {
-        "auth01.ns.dk-hostmaster.dk": {
-            "domain": "eksempel.dk",
-            "domain_encoded": "eksempel.dk",
-            "hostname": "auth01.ns.dk-hostmaster.dk",
-            "hostname_encoded": "auth01.ns.dk-hostmaster.dk"
-        },
-        "auth02.ns.dk-hostmaster.dk": {
-            "domain": "eksempel.dk",
-            "domain_encoded": "eksempel.dk",
-            "hostname": "auth02.ns.dk-hostmaster.dk",
-            "hostname_encoded": "auth02.ns.dk-hostmaster.dk"
-        }
-    },
-    "paiduntildate": "2022-06-30T00:00:00+02:00",
-    "periodqty": "5",
-    "public_deletedate": null,
-    "public_domain_status": "A",
-    "registrant": {
-        "city": "København S",
-        "countryregionid": "DK",
-        "name": "DK HOSTMASTER A/S",
-        "phone": null,
-        "street1": "Ørestads Boulevard 108, 11.",
-        "street2": null,
-        "street3": null,
-        "useridtype": "V",
-        "zipcode": "2300"
-    },
-    "status": 200
-}
-```
+The examples in this document use `curl`, but any HTTP client capable of setting the `Accept` header, such as [HTTPie](https://httpie.io/), can be used.
 
 <a id="domain"></a>
 ## domain
 
-This service returns data on a given domain name.
-
-As of version 2.X.X of the service, admin/proxy information is no longer part of the response data, same goes for name server administrators/zone contact handles.
-
-As of version 3.X.X of the service, registrant user-id/handle information is no longer part of the response data.
-
-As of version 4.X.X of the service:
-
-- information on a domain name offered from a waiting list is available.
-- registrar information is included in the response data.
-
-With the new registrar information included where applicable the responses can and will vary depending on the model chosen for administration of the given domain name.
-
-If the domain name is under registrar management, a registrar data section is included:
-
-```json
-"registrar": {
-    "city": "København S",
-    "countryregionid": "DK",
-    "is_public": false,
-    "logo": "",
-    "name": "DK Hostmaster A/S",
-    "phone": "+45 33 64 60 60",
-    "street1": "Ørestads Boulevard 108, 11.",
-    "street2": null,
-    "street3": null,
-    "url": "www.dk-hostmaster.dk",
-    "useridtype": "V",
-    "zipcode": "2300"
-},
-```
-
-NB: The above example is constructed.
-
-The fields are:
-
-- `city`, city part of address
-- `countryregionid`, country part of address
-- `is_public`, flag indicating if the registrar is listed in the public registrar listing
-- `logo`, URL to public logo
-- `name`, name
-- `phone`, public phone number
-- `street1`, first street part of address
-- `street2`, second street part of address
-- `street3`, third street part of address
-- `useridtype`, internal type indicating whether the entity is an association, company, individual or public organization
-- `zipcode`, zipcode part of address
-
-Do note that the listing on the public registrar listing and have address information redacted from public interfaces is not that same.
-
-If the domain name is under registrar management, but the registrars address information is not public, the section look as follows:
-
-```json
-"registrar": {
-    "is_public": false
-}
-```
-
-If the domain name is under registrant management, not registrar data is included.
-
-So the responses can be divided into two groups based on the registrar data section
-
-- Registrant managed, section is not included
-- Registrar managed, section is included, excluding address data if the address is not public
+This API returns data on a given domain name.
 
 <a id="api"></a>
 ### API
 
-`https://whois-api.dk-hostmaster.dk/domain/{domainname}`
+Domain name information is requested using the following endpoint:
 
-The service returns `200` if it can find a relevant object together with the public data.
+```
+GET /domain/{domainname}
+```
 
-| Return Code  | Description |
-| ------------ | ------------ |
-| `200` | OK |
-| `400` | Bad request |
-| `404` | Object not found |
-| `415` | Unsupported media type |
+Where `{domainname}` is the domain name being inquired about. The domain name can be provided using any of the encodings listed under [Encoding](#encoding); for IDNA domain names, either the Unicode form or the punycode (ACE) form can be used.
 
 <a id="example"></a>
 ### Example
 
-Using `httpie`
+Requesting information for the domain name `eksempel.dk`:
 
 ```bash
-$ http https://whois-api.dk-hostmaster.dk/domain/eksempel.dk Accept:'application/json'
+$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/domain/eksempel.dk
 ```
 
-Using `curl` and `jq`
-
-```bash
-$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/domain/eksempel.dk | jq
-```
+The response for a registrar-managed domain name looks as follows:
 
 ```json
 {
@@ -388,246 +266,294 @@ $ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/do
     "dnssec": "J",
     "domain": "eksempel.dk",
     "domain_encoded": "eksempel.dk",
-    "domain_type": "V",
+    "domain_type": "N",
     "message": "OK",
     "nameservers": {
-        "auth01.ns.dk-hostmaster.dk": {
+        "ns1.example.dk": {
             "domain": "eksempel.dk",
             "domain_encoded": "eksempel.dk",
-            "hostname": "auth01.ns.dk-hostmaster.dk",
-            "hostname_encoded": "auth01.ns.dk-hostmaster.dk"
+            "hostname": "ns1.example.dk",
+            "hostname_encoded": "ns1.example.dk"
         },
-        "auth02.ns.dk-hostmaster.dk": {
+        "ns2.example.dk": {
             "domain": "eksempel.dk",
             "domain_encoded": "eksempel.dk",
-            "hostname": "auth02.ns.dk-hostmaster.dk",
-            "hostname_encoded": "auth02.ns.dk-hostmaster.dk"
+            "hostname": "ns2.example.dk",
+            "hostname_encoded": "ns2.example.dk"
         }
     },
-    "paiduntildate": "2022-06-30T00:00:00+02:00",
-    "periodqty": "5",
+    "paiduntildate": "2027-06-30T00:00:00+02:00",
+    "periodqty": "1",
     "public_deletedate": null,
     "public_domain_status": "A",
     "registrant": {
         "city": "København S",
         "countryregionid": "DK",
-        "name": "DK HOSTMASTER A/S",
-        "phone": null,
+        "email": "info@punktum.dk",
+        "id_status": "N",
+        "name": "Punktum dk A/S",
+        "phone": "+45 33646060",
         "street1": "Ørestads Boulevard 108, 11.",
         "street2": null,
         "street3": null,
-        "useridtype": "V",
+        "zipcode": "2300"
+    },
+    "registrar": {
+        "city": "København S",
+        "countryregionid": "DK",
+        "email": "info@example.dk",
+        "is_public": true,
+        "logo": "https://selvbetjening.dk-hostmaster.dk/img/registrar/0000",
+        "name": "Example Registrar A/S",
+        "phone": "+45 00000000",
+        "street1": "Eksempelvej 1",
+        "street2": null,
+        "street3": null,
+        "url": "https://example.dk",
         "zipcode": "2300"
     },
     "status": 200
 }
 ```
 
-If the queried domain name is offered from a waiting list, the response will look as follows:
+The top-level fields are:
+
+| Field                  | Description                                                                                                       |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `createddate`          | Date of registration in [ISO 8601][ISO-8601] format                                                               |
+| `dnssec`               | Indicates whether DNSSEC is active for the domain name, see [Field Values](#field-values)                         |
+| `domain`               | The domain name inquired about, in Unicode form                                                                   |
+| `domain_encoded`       | The domain name in encoded (punycode/ACE) form, identical to `domain` for ASCII domain names                      |
+| `domain_type`          | Type of the domain name, see [Field Values](#field-values)                                                        |
+| `message`              | Status message accompanying the response, e.g. `OK`                                                               |
+| `nameservers`          | The name servers serving the domain name, see below                                                               |
+| `paiduntildate`        | Date the domain name is paid until, in [ISO 8601][ISO-8601] format                                                |
+| `periodqty`            | Registration period in years                                                                                      |
+| `public_deletedate`    | Date the domain name is scheduled for deletion, in [ISO 8601][ISO-8601] format, `null` if not set                 |
+| `public_domain_status` | The public status of the domain name, see [Field Values](#field-values)                                           |
+| `registrant`           | The registrant of the domain name, see below                                                                      |
+| `registrar`            | The registrar managing the domain name, included only for registrar-managed domain names, see below               |
+| `status`               | The HTTP status code of the response                                                                              |
+
+Each entry in the `nameservers` section contains:
+
+| Field              | Description                                              |
+| ------------------ | -------------------------------------------------------- |
+| `hostname`         | The host name of the name server, in Unicode form        |
+| `hostname_encoded` | The host name in encoded (punycode/ACE) form             |
+| `domain`           | The domain name served by the name server, in Unicode form |
+| `domain_encoded`   | The served domain name in encoded (punycode/ACE) form    |
+
+The `registrant` section contains:
+
+| Field             | Description                                                             |
+| ----------------- | ----------------------------------------------------------------------- |
+| `city`            | City part of the address                                                |
+| `countryregionid` | Country part of the address, as an [ISO-3166-1] alpha-2 code            |
+| `email`           | Email address, `null` if not available                                  |
+| `id_status`       | The identity verification status of the registrant, see [Field Values](#field-values) |
+| `name`            | Name                                                                    |
+| `phone`           | Phone number, `null` if not available                                   |
+| `street1`         | First street part of the address                                        |
+| `street2`         | Second street part of the address, `null` if not set                    |
+| `street3`         | Third street part of the address, `null` if not set                     |
+| `zipcode`         | Zipcode part of the address                                             |
+
+The `registrar` section is included only for registrar-managed domain names. For registrant-managed domain names, the section is omitted entirely. The registrar's address details are included only when the registrar is listed in the public registrar listing; when it is not, the section contains only `is_public` and `name`.
+
+| Field             | Description                                                                    |
+| ----------------- | ------------------------------------------------------------------------------ |
+| `city`            | City part of the address                                                       |
+| `countryregionid` | Country part of the address, as an [ISO-3166-1] alpha-2 code                   |
+| `email`           | Public email address, `null` if not available                                  |
+| `is_public`       | Flag indicating whether the registrar is listed in the public registrar listing |
+| `logo`            | URL to the registrar's public logo                                             |
+| `name`            | Name                                                                           |
+| `phone`           | Public phone number, `null` if not available                                   |
+| `street1`         | First street part of the address                                               |
+| `street2`         | Second street part of the address, `null` if not set                           |
+| `street3`         | Third street part of the address, `null` if not set                            |
+| `url`             | The registrar's public website                                                 |
+| `zipcode`         | Zipcode part of the address                                                    |
+
+<a id="example-waiting-list"></a>
+### Example waiting list
+
+A domain name offered from a waiting list is not registered, and the response therefore contains only a limited set of fields, with `public_domain_status` set to `W`:
 
 ```json
 {
-    "domain": "eksempel.dk",
-    "domain_encoded": "eksempel.dk",
+    "domain": "waiting-list.dk",
+    "domain_encoded": "waiting-list.dk",
     "message": "OK",
     "public_domain_status": "W",
     "status": 200
 }
+```
 
-Do note the special status: `W`.
+<a id="field-values"></a>
+### Field Values
+
+The following fields in the domain response return coded values.
+
+**`domain_type`**
+
+| Value | Description |
+| ----- | ----------- |
+| `N`   | The domain name does not have the VID service |
+| `V`   | The domain name has the VID service |
+
+**`dnssec`**
+
+| Value | Description |
+| ----- | ----------- |
+| `J`   | DNSSEC is active for the domain name |
+| `N`   | DNSSEC is not active for the domain name |
+
+**`public_domain_status`**
+
+| Value | Description |
+| ----- | ----------- |
+| `A`   | The domain name is published to the zone |
+| `H`   | The domain name is being withheld from being published to the zone (general status) |
+| `I`   | The domain name is inactive and not being published to the zone (activation required by the registrant) |
+| `W`   | The domain name is offered from a waiting list (acceptance required by the designated registrant) |
+
+**`id_status`**
+
+| Value | Description |
+| ----- | ----------- |
+| `N`   | The registrant has completed identity verification using electronic ID (MitID) |
+| `V`   | The registrant has verified their identity by submitting documentation |
+| `F`   | The registrant has completed the identity check with their registrar |
+| `R`   | The registrant has been assessed by Punktum dk's risk engine as not required to complete the identity check |
 
 <a id="host"></a>
 ## host
 
-This service returns data on a given hostname/name server.
+This API returns data on a given host (name server).
 
-As of version 2.X.X of the service, name server administrators/zone contact handle information is no longer part of the response data.
-
-<a id="api-3"></a>
+<a id="api-1"></a>
 ### API
 
-`https://whois-api.dk-hostmaster.dk/host/{hostname}`
+Host information is requested using the following endpoint:
 
-| Return Code  | Description |
-| ------------ | ------------ |
-| `200` | OK |
-| `400` | Bad request |
-| `404` | Object not found |
-| `415` | Unsupported media type |
+```
+GET /host/{hostname}
+```
 
-<a id="example-3"></a>
+Where `{hostname}` is the host name being inquired about. The host name can be provided using any of the encodings listed under [Encoding](#encoding); for IDNA host names, either the Unicode form or the punycode (ACE) form can be used.
+
+<a id="example-1"></a>
 ### Example
 
-Using `httpie`
+Requesting information for the host `ns1.example.dk`:
 
 ```bash
-$ http https://whois-api.dk-hostmaster.dk/host/auth01.ns.dk-hostmaster.dk Accept:'application/json'
+$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/host/ns1.example.dk
 ```
 
-Using `curl` and `jq`
-
-```bash
-$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/host/auth01.ns.dk-hostmaster.dk | jq
-```
+The response looks as follows:
 
 ```json
 {
-  "glue_spooled": "J",
-  "hostname": "auth01.ns.dk-hostmaster.dk",
-  "hostname_encoded": "auth01.ns.dk-hostmaster.dk",
-  "message": "OK",
-  "nameserver_status": "A",
-  "status": 200
+    "glue_spooled": "J",
+    "hostname": "ns1.example.dk",
+    "hostname_encoded": "ns1.example.dk",
+    "message": "OK",
+    "nameserver_status": "A",
+    "status": 200
 }
 ```
+
+The fields are:
+
+| Field               | Description                                                                       |
+| ------------------- | --------------------------------------------------------------------------------- |
+| `glue_spooled`      | Indicates whether a glue record is being spooled for the host, see [Field Values](#field-values-1) |
+| `hostname`          | The host name inquired about, in Unicode form                                     |
+| `hostname_encoded`  | The host name in encoded (punycode/ACE) form, identical to `hostname` for ASCII host names |
+| `message`           | Status message accompanying the response, e.g. `OK`                               |
+| `nameserver_status` | The status of the host, see [Field Values](#field-values-1)                       |
+| `status`            | The HTTP status code of the response                                              |
+
+<a id="field-values-1"></a>
+### Field Values
+
+The following fields in the host response return coded values.
+
+**`glue_spooled`**
+
+| Value | Description |
+| ----- | ----------- |
+| `J`   | A glue record is being spooled for the host |
+| `N`   | No glue record is being spooled for the host |
+
+**`nameserver_status`**
+
+| Value | Description |
+| ----- | ----------- |
+| `A`   | The host is active |
+| `G`   | The host is awaiting approval by the registrant of the domain |
+| `I`   | The host is awaiting approval by the party responsible for the name server |
+| `S`   | The host is marked for deletion |
 
 <a id="query"></a>
 ## query
 
-This service acts as a central entry points it relays to the above services:
+This API is a generic entry point that accepts both domain names and host names. It determines the entity type of the inquiry and relays it to the specialized API, returning the same response as a direct inquiry to [domain](#domain) or [host](#host).
 
-<a id="api-4"></a>
+This is useful when the entity type of the inquiry is not known in advance.
+
+<a id="api-2"></a>
 ### API
 
-`https://whois-api.dk-hostmaster.dk/#query`
+Information is requested using the following endpoint:
 
-| Return Code  | Description |
-| ------------ | ------------ |
-| `200` | OK |
-| `400` | Bad request |
-| `404` | Object not found |
-| `415` | Unsupported media type |
+```
+GET /query/{name}
+```
+
+Where `{name}` is the domain name or host name being inquired about. The name can be provided using any of the encodings listed under [Encoding](#encoding).
 
 <a id="domain-example"></a>
 ### Domain Example
 
-Using `httpie`
+Querying a domain name returns the same response as the [domain](#domain) API:
 
 ```bash
-$ http https://whois-api.dk-hostmaster.dk/query/eksempel.dk Accept:'application/json'
-```
-
-Using `curl` and `jq`
-
-```bash
-$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/query/eksempel.dk | jq
-```
-
-```json
-{
-    "createddate": "1999-05-17T00:00:00+02:00",
-    "dnssec": "J",
-    "domain": "eksempel.dk",
-    "domain_encoded": "eksempel.dk",
-    "domain_type": "V",
-    "message": "OK",
-    "nameservers": {
-        "auth01.ns.dk-hostmaster.dk": {
-            "domain": "eksempel.dk",
-            "domain_encoded": "eksempel.dk",
-            "hostname": "auth01.ns.dk-hostmaster.dk",
-            "hostname_encoded": "auth01.ns.dk-hostmaster.dk"
-        },
-        "auth02.ns.dk-hostmaster.dk": {
-            "domain": "eksempel.dk",
-            "domain_encoded": "eksempel.dk",
-            "hostname": "auth02.ns.dk-hostmaster.dk",
-            "hostname_encoded": "auth02.ns.dk-hostmaster.dk"
-        }
-    },
-    "paiduntildate": "2022-06-30T00:00:00+02:00",
-    "periodqty": "5",
-    "public_deletedate": null,
-    "public_domain_status": "A",
-    "registrant": {
-        "city": "København S",
-        "countryregionid": "DK",
-        "name": "DK HOSTMASTER A/S",
-        "phone": null,
-        "street1": "Ørestads Boulevard 108, 11.",
-        "street2": null,
-        "street3": null,
-        "useridtype": "V",
-        "zipcode": "2300"
-    },
-    "status": 200
-}
+$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/query/eksempel.dk
 ```
 
 <a id="host-example"></a>
 ### Host Example
 
-Using `httpie`
+Querying a host name returns the same response as the [host](#host) API:
 
 ```bash
-$ http https://whois-api.dk-hostmaster.dk/query/auth01.ns.dk-hostmaster.dk Accept:'application/json'
-```
-
-Using `curl` and `jq`
-
-```bash
-$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/query/auth01.ns.dk-hostmaster.dk | jq
-```
-
-```json
-{
-  "glue_spooled": "J",
-  "hostname": "auth01.ns.dk-hostmaster.dk",
-  "hostname_encoded": "auth01.ns.dk-hostmaster.dk",
-  "message": "OK",
-  "nameserver_status": "A",
-  "status": 200
-}
+$ curl --header "Accept: application/json" https://whois-api.dk-hostmaster.dk/query/auth01.ns.dk-hostmaster.dk
 ```
 
 <a id="test-data"></a>
-## Test Data
+# Test Data
 
-The sandbox uses a combination of a predefined set of test data and data added to the sandbox environment by use.
+The sandbox environment provides a set of predefined test domains, in addition to any domains you register yourself via EPP or RP. For the list of predefined test domains and details on the sandbox environment, see the [sandbox environment specification](https://github.com/Punktum-dk/sandbox-environment-specification).
 
-<a id="domains"></a>
-### Domains
-
-| Domain name | Status | Notes |
-|-------------|--------|-------|
-| `dk-hostmaster.dk` | `A` | The domain is visible and active |
-| `æøåöäüé.dk` | `A` | The domain is visible and active |
-| `waiting-list.dk` | `W` | The domain status is awaiting the designated registrant |
-| * | * | Depending on what domains have been registered with the sandbox environment. Please see the [sandbox environment specification](https://github.com/DK-Hostmaster/sandbox-environment-specification) for details. |
+One predefined test domain is worth noting here: `waiting-list.dk` simulates the transient `Offered to waiting list` state, which is otherwise difficult to reproduce on demand. It can be queried in the sandbox environment to see the response shown under [the domain example for a name offered to the waiting list](#example-waiting-list).
 
 <a id="references"></a>
 # References
 
-Here is a list of documents and references used in this document
+Here is a list of documents and references used in this document:
 
-1. [RFC:3912 WHOIS Protocol Specification][RFC:3912]
 1. [RFC:5891 Internationalized Domain Names in Applications (IDNA): Protocol][RFC:5891]
-1. [RFC:3986 Uniform Resource Identifier (URI): Generic Syntax][RFC:3986]
-1. [ISO-8601: International date format][ISO:8601]
-
-<a id="resources"></a>
-# Resources
-
-Resources for DK Hostmaster WHOIS support can be found below.
-
-<a id="mailing-list"></a>
-## Mailing list
-
-DK Hostmaster operates a mailing list for discussion and inquiries  about the DK Hostmaster RESTful WHOIS service. To subscribe to this list, write to the address below and follow the instructions. Please note that the list is for technical discussion only, any issues beyond the technical scope will not be responded to, please send these to the contact issue reporting address below and they will be passed on to the appropriate entities within DK Hostmaster A/S.
-
-- `tech-discuss+subscribe@liste.dk-hostmaster.dk`
+1. [ISO 3166-1: Alpha-2 two-letter country codes][ISO-3166-1]
+1. [ISO 8601: International date format][ISO-8601]
 
 <a id="issue-reporting"></a>
-## Issue Reporting
+# Issue Reporting
 
-For issue reporting related to this specification, the WHOIS implementation or the production environment, please contact us. You are of course welcome to post these to the mailing list mentioned above, otherwise use the regular support channels.
-
-<a id="additional-information"></a>
-## Additional Information
-
-The DK Hostmaster website service page
-
-- `https://www.dk-hostmaster.dk/en/whois`
+For issue reporting related to this specification, the RESTful WHOIS implementation, or the production environment, please contact us at registrar@punktum.dk or via the [registrar contact form][CONTACTFORM].
 
 <a id="appendices"></a>
 # Appendices
@@ -635,31 +561,19 @@ The DK Hostmaster website service page
 <a id="http-status-codes"></a>
 ## HTTP Status Codes
 
-The services hold their own table of return codes, this is just a curated list to collect all possible return codes, please refer to the specific services also.
+The service uses the following HTTP status codes:
 
-| Return Code  | Description |
-| ------------ | ------------ |
-| `200` | OK |
-| `400` | Bad request |
-| `404` | Object not found |
-| `415` | Unsupported media type |
-| `500` | Internal server error |
+| Status Code | Description                   |
+| ----------- | ----------------------------- |
+| `200`       | OK                            |
+| `400`       | Bad request                   |
+| `404`       | Object not found              |
+| `415`       | Unsupported media type        |
+| `500`       | Internal server error         |
+| `503`       | Service temporarily unavailable |
 
-<a id="public-domain-status-values"></a>
-## Public Domain Status Values
+[RFC:5891]: https://www.rfc-editor.org/rfc/rfc5891
+[ISO-3166-1]: https://en.wikipedia.org/wiki/ISO_3166-1
 
-| Status | Description                                                                                        |
-| ------ | -------------------------------------------------------------------------------------------------- |
-| `A`    | Domain name is or being published to the zone                                                      |
-| `B`    | Domain name is blocked and not being published to the zone (special status)                        |
-| `H`    | Domain name is being withheld from being published to the zone (general status)                    |
-| `I`    | Domain name is inactive and is not being published to the zone (activation required by registrant) |
-| `W`    | Domain name is offered from a waiting list to (acceptance is required by designated registrant) |
-
-[RFC:3492]: https://tools.ietf.org/html/rfc3492
-[RFC:3912]: https://tools.ietf.org/html/rfc3912
-[RFC:3986]: https://tools.ietf.org/html/rfc3986
-[ISO:8601]: https://www.iso.org/iso-8601-date-and-time-format.html
-[CONCEPT]: https://www.dk-hostmaster.dk/en/new-basis-collaboration-between-registrars-and-dk-hostmaster
-[RFC:5891]: https://tools.ietf.org/html/rfc5891
-[WIKI]: https://github.com/DK-Hostmaster/whois-rest-service-specification/wiki
+[ISO-8601]: https://en.wikipedia.org/wiki/ISO_8601
+[CONTACTFORM]: https://punktum.dk/en/contact-customer-service?lvl1=Registrars&lvl2=CSRegistrarOther
