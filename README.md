@@ -495,7 +495,6 @@ The following fields in the host response return coded values.
 | `G`   | The host is awaiting approval by the registrant of the domain |
 | `I`   | The host is awaiting approval by the party responsible for the name server |
 | `S`   | The host is marked for deletion |
-```
 
 <a id="query"></a>
 ## query
