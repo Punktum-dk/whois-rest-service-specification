@@ -196,9 +196,13 @@ The service supports the following encodings:
 <a id="rate-limiting"></a>
 ## Rate Limiting
 
-The service does not enforce a rate limit. You can query the service as often as your integration requires, in both the production and the sandbox environment.
+The service enforces a rate limit of 600 requests per 60 seconds. The limit applies to the period
+as a whole, so bursts of requests are permitted, but once the limit for a period is reached, no
+further requests are accepted until the period has elapsed.
 
-👉 Query volumes are expected to be proportional to actual business use. Punktum dk reserves the right to introduce a rate limit, or to remove IP-whitelisting, if use of the service affects the overall quality of the service.
+👉 Query volumes are expected to be proportional to actual business use. Punktum dk reserves
+the right to adjust the rate limit, or to remove IP-whitelisting, if use of the service affects
+the overall quality of the service.
 
 <a id="security"></a>
 ## Security
